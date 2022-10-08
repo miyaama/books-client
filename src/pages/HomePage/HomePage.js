@@ -1,4 +1,4 @@
-import styles from "./HomePage.module.scss"
+// import styles from "./HomePage.module.scss"
 import PageLayout from "../../components/PageLayout";
 
 const HomePage = () => {

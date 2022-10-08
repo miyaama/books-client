@@ -1,4 +1,4 @@
-import styles from "./UserPage.module.scss"
+// import styles from "./UserPage.module.scss"
 import PageLayout from "../../components/PageLayout";
 
 

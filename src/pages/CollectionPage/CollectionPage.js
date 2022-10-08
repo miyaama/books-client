@@ -1,4 +1,4 @@
-import styles from "./CollectionPage.module.scss"
+// import styles from "./CollectionPage.module.scss"
 import PageLayout from "../../components/PageLayout";
 
 const CollectionPage = () => {
