@@ -1,0 +1,17 @@
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.form {
+  width: 300px;
+  margin: auto;
+}
+
+.authorizationButton {
+    width: 100%;
+  }
