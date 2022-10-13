@@ -6,7 +6,7 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 
 import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys";
-import styles from "./AuthorizationPage.module.scss"
+import styles from "./AuthorizationPage.module.scss";
 import PageLayout from "../../components/PageLayout";
 
 const { Title } = Typography;
@@ -24,7 +24,7 @@ const AuthorizationPage = () => {
 
   const register = () => {
     axios
-      .post("https://itransition-task4-server.herokuapp.com/api/register", {
+      .post("http://localhost:5000/users/register", {
         email: email,
         password: password,
         name: userName,
@@ -39,11 +39,14 @@ const AuthorizationPage = () => {
           localStorage.setItem(
             IS_LOGIN_LOCAL_STORAGE,
             JSON.stringify({
-              id: response.data.insertId,
+              id: response.data.id,
+              name: userName,
+              email: email,
+              access: "user",
               isLogin: true,
             })
           );
-          navigate("/home");
+          navigate("/");
         }
       });
   };
@@ -122,7 +125,7 @@ const AuthorizationPage = () => {
             </Button>
           </Form.Item>
           <Form.Item>
-            <Link to="/">{t("alreadyHaveAccount")}</Link>
+            <Link to="/login">{t("alreadyHaveAccount")}</Link>
           </Form.Item>
         </Form>
       </div>

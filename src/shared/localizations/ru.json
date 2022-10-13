@@ -6,5 +6,20 @@
   "registerNow": "Зарегистрироваться сейчас",
   "autorization": "Зарегистрироваться",
   "name": "Имя",
-  "alreadyHaveAccount": "Уже есть аккаунт?"
+  "alreadyHaveAccount": "Уже есть аккаунт?",
+  "blockUser": "Заблокировать",
+  "status": "Статус",
+  "access": "Доступ",
+  "registrationDate": "Дата Регистрации",
+  "usersList": "Управление пользователями",
+  "addAdmin": "Сделать администратором",
+  "removeAdmin": "Убрать из администраторов",
+  "logout": "Выйти",
+  "myCollections": "Мои коллекции",
+  "largestCollections": "Самые большие коллекции",
+  "lastItems": "Последние добавленные",
+  "add": "Добавить +",
+  "admin": "Панель администратора",
+  "collections": "Коллекции ",
+  "createСollection": "Создание коллекции"
 }

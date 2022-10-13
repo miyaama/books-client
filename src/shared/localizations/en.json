@@ -6,5 +6,20 @@
   "registerNow": "Or register now",
   "autorization": "Autorization",
   "name": "Name",
-  "alreadyHaveAccount": "Already have an account?"
+  "alreadyHaveAccount": "Already have an account?",
+  "blockUser": "Block User",
+  "status": "Status",
+  "access": "Access",
+  "registrationDate": "Registration date",
+  "usersList": "Users list",
+  "addAdmin": "Make administrator",
+  "removeAdmin": "Remove administrator",
+  "logout": "Logout",
+  "myCollections": "My collections",
+  "largestCollections": "The largest Collections",
+  "lastItems": "Last added",
+  "add": "Add +",
+  "admin": "Admin panel",
+  "collections": "Collections ",
+  "createСollection": "Create collection"
 }

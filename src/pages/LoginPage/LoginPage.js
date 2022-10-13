@@ -5,36 +5,37 @@ import { Button, Form, Input, Typography } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 
-import styles from "./LoginPage.module.scss"
+import { login } from "../../store/slices";
+import styles from "./LoginPage.module.scss";
 import PageLayout from "../../components/PageLayout";
 import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys";
 
 const { Title, Text } = Typography;
-
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   const { t } = useTranslation();
 
-  const login = () => {
+  const onLogin = () => {
     axios
-      .post("https://itransition-task4-server.herokuapp.com/api/login", {
+      .post("http://localhost:5000/users/login", {
         email: email,
         password: password,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.message) {
           setError(response.data.message);
           setTimeout(() => {
             setError("");
           }, 3000);
-        } else if (response.data[0].status === "blocked") {
+        } else if (response.data.status === "blocked") {
           setError("Your account is blocked");
           setTimeout(() => {
             setError("");
@@ -43,11 +44,25 @@ const LoginPage = () => {
           localStorage.setItem(
             IS_LOGIN_LOCAL_STORAGE,
             JSON.stringify({
-              id: response.data[0].id,
+              id: response.data.id,
+              name: response.data.name,
+              email: response.data.email,
+              access: response.data.access,
               isLogin: true,
             })
           );
-          navigate("/home");
+
+          dispatch(
+            login({
+              id: response.data.id,
+              name: response.data.name,
+              email: email,
+              access: response.data.access,
+              isLogin: true,
+            })
+          );
+
+          navigate("/");
         }
       });
   };
@@ -62,9 +77,9 @@ const LoginPage = () => {
           initialValues={{
             remember: true,
           }}
-          onFinish={login}
+          onFinish={onLogin}
         >
-          <Title level={4}>{t('login')}</Title>
+          <Title level={4}>{t("login")}</Title>
           <Form.Item
             name="email"
             onChange={(e) => {
@@ -111,7 +126,7 @@ const LoginPage = () => {
             </Button>
           </Form.Item>
           <Form.Item>
-             <Link to="/authorization">{t("registerNow")}</Link>
+            <Link to="/authorization">{t("registerNow")}</Link>
           </Form.Item>
         </Form>
       </div>
