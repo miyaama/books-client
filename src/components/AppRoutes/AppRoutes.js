@@ -6,7 +6,7 @@ import UserPage from "../../pages/UserPage/";
 import HomePage from "../../pages/HomePage";
 import CollectionPage from "../../pages/CollectionPage";
 import AdminPage from "../../pages/AdminPage";
-import AddCoolectionPage from "../../pages/AddCoolectionPage";
+import AddCollectionPage from "../../pages/AddCollectionPage";
 
 export default function AppRoutes() {
   return (
@@ -18,7 +18,7 @@ export default function AppRoutes() {
       <Route path="/collection/:collectionId" element={<CollectionPage />} />
       <Route path="/book/:bookId" element={<CollectionPage />} />
       <Route path="/admin" element={<AdminPage />} />
-      <Route path="/addcollection" element={<AddCoolectionPage />} />
+      <Route path="/addcollection" element={<AddCollectionPage />} />
     </Routes>
   );
 }

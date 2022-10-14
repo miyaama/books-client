@@ -10,6 +10,7 @@ import PageLayout from "../../components/PageLayout";
 // import styles from "./AdminPage.module.scss";
 import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys";
 import { actionAddAdmin, actionRemoveAdmin, logout } from "../../store/slices";
+import { ACCESS_ADMIN, ACCESS_USER } from "../../shared/constants";
 
 const AdminPage = () => {
   const [users, setUsers] = useState([]);
@@ -115,7 +116,7 @@ const AdminPage = () => {
     setUsers(newUsers);
     id.forEach((userId) => {
       if (userId === currentUserId) {
-        dispatch(logout())
+        dispatch(logout());
         navigate("/");
       }
     });
@@ -144,7 +145,7 @@ const AdminPage = () => {
         dispatch(actionAddAdmin());
         localStorage.setItem(
           IS_LOGIN_LOCAL_STORAGE,
-          JSON.stringify({ ...userData, access: "admin" })
+          JSON.stringify({ ...userData, access: ACCESS_ADMIN })
         );
       }
     });
@@ -173,7 +174,7 @@ const AdminPage = () => {
         dispatch(actionRemoveAdmin());
         localStorage.setItem(
           IS_LOGIN_LOCAL_STORAGE,
-          JSON.stringify({ ...userData, access: "user" })
+          JSON.stringify({ ...userData, access: ACCESS_USER })
         );
       }
     });

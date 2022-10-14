@@ -10,41 +10,58 @@ import {
   IS_LOGIN_LOCAL_STORAGE,
 } from "../../shared/constants/localStorageKeys";
 import { logout } from "../../store/slices";
+import { ACCESS_ADMIN } from "../../shared/constants";
 
 const { Title } = Typography;
 const { Option } = Select;
 const { Header } = Layout;
 
-const PageHeader = () => {
-  const user = useSelector((state) => state.login.value);
-  const state = useSelector((state) => state);
-  const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
-  console.log("state: ", state);
-  const items = [
+const getmenuItems = (user, translation) => {
+  const { isLogin, access } = user;
+
+  let items = [
     {
       label: (
         <Link to="/" key="item0">
-          {t("home")}
+          {translation("home")}
         </Link>
       ),
-    },
-    {
-      label: (
-        <Link to={`/user/${user?.id}`} key="item1">
-          {t("myPage")}
-        </Link>
-      ),
-    },
-    {
-      label: (
-        <Link to="/admin" key="item2">
-          {t("admin")}
-        </Link>
-      ),
+      key: "home",
     },
   ];
+
+  if (isLogin) {
+    items.push({
+      label: (
+        <Link to={`/user/${user?.id}`} key="item1">
+          {translation("myPage")}
+        </Link>
+      ),
+      key: "page",
+    });
+  }
+
+  if (access === ACCESS_ADMIN) {
+    items.push({
+      label: (
+        <Link to="/admin" key="item2">
+          {translation("admin")}
+        </Link>
+      ),
+      key: "admin",
+    });
+  }
+  return items;
+};
+
+const PageHeader = () => {
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.login);
+
+  const items = getmenuItems(user, t);
 
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
@@ -63,15 +80,17 @@ const PageHeader = () => {
   return (
     <Header className={styles.header}>
       <Link to="/">
-        <Title
-          level={3}
-          style={{ color: "#ffffff", margin: 0, textAlign: "center" }}
-        >
+        <Title level={3} className={styles.title}>
           My Library
         </Title>
       </Link>
-      <Menu items={items} theme="dark" mode="horizontal" />
-      <div>
+      <Menu
+        items={items}
+        theme="dark"
+        mode="horizontal"
+        className={styles.menu}
+      />
+      <div className={styles.buttons}>
         <Select
           defaultValue={localStorage.getItem(LANGUAGE) || "en"}
           style={{

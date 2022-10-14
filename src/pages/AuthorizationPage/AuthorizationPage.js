@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Button, Form, Input, Typography } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -8,11 +9,14 @@ import { useTranslation } from "react-i18next";
 import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys";
 import styles from "./AuthorizationPage.module.scss";
 import PageLayout from "../../components/PageLayout";
+import { login } from "../../store/slices";
+import { ACCESS_USER } from "../../shared/constants";
 
 const { Title } = Typography;
 
 const AuthorizationPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [form] = Form.useForm();
   const [email, setEmail] = useState("");
@@ -30,20 +34,32 @@ const AuthorizationPage = () => {
         name: userName,
       })
       .then((response) => {
+        console.log("response: ", response);
         if (response.data.message) {
           setError(response.data.message);
           setTimeout(() => {
             setError("");
           }, 5000);
         } else if (response.status === 200) {
+          const id = response.data.id;
+
           localStorage.setItem(
             IS_LOGIN_LOCAL_STORAGE,
             JSON.stringify({
               id: response.data.id,
               name: userName,
               email: email,
-              access: "user",
+              access: ACCESS_USER,
               isLogin: true,
+            })
+          );
+          dispatch(
+            login({
+              id: id,
+              name: userName,
+              email: email,
+              isLogin: true,
+              access: ACCESS_USER,
             })
           );
           navigate("/");

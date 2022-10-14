@@ -21,5 +21,9 @@
   "add": "Add +",
   "admin": "Admin panel",
   "collections": "Collections ",
-  "createСollection": "Create collection"
+  "createСollection": "Create collection",
+  "description": "Description",
+  "theme": "Theme",
+  "image": "Image",
+  "upload": "Upload"
 }

@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLogin: false,
@@ -13,19 +13,11 @@ export const loginSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      console.log(current(state));
-      state = action.payload;
+      return action.payload;
     },
 
     logout: (state) => {
-      state = initialState;
-    },
-
-    actionAddAdmin: (state) => {
-      state = { ...state, access: "admin" };
-    },
-    actionRemoveAdmin: (state) => {
-      state = { ...state, access: "user" };
+      return initialState;
     },
   },
 });

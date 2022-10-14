@@ -4,4 +4,23 @@
   justify-content: space-between;
 }
 
+.title {
+  white-space: nowrap;
+  color: #fff !important;
+  margin: 0;
+  text-align: center;
+  margin: 0  !important;
+}
+
+.menu {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
 

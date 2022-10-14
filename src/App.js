@@ -12,19 +12,17 @@ function App() {
   const dispatch = useDispatch();
   const isAuth = getAuthFromLocalStorage();
 
-  console.log(isAuth);
-
-  // if (isAuth?.isLogin) {
-  //   dispatch(
-  //     login({
-  //       id: isAuth.id,
-  //       name: isAuth.name,
-  //       email: isAuth.email,
-  //       isLogin: isAuth.isLogin,
-  //       access: isAuth.access,
-  //     })
-  //   );
-  // }
+  if (isAuth?.isLogin) {
+    dispatch(
+      login({
+        id: isAuth.id,
+        name: isAuth.name,
+        email: isAuth.email,
+        isLogin: isAuth.isLogin,
+        access: isAuth.access,
+      })
+    );
+  }
 
   return (
     <div className="App">
