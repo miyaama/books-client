@@ -34,7 +34,6 @@ const AuthorizationPage = () => {
         name: userName,
       })
       .then((response) => {
-        console.log("response: ", response);
         if (response.data.message) {
           setError(response.data.message);
           setTimeout(() => {
@@ -89,11 +88,11 @@ const AuthorizationPage = () => {
             rules={[
               {
                 type: "email",
-                message: "The input is not valid E-mail!",
+                message: t("errorValidEmail"),
               },
               {
                 required: true,
-                message: "Please input your E-mail!",
+                message: t("errorEmail"),
               },
             ]}
           >
@@ -109,7 +108,7 @@ const AuthorizationPage = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your password!",
+                message: t("errorPassword"),
               },
             ]}
             hasFeedback
@@ -125,7 +124,7 @@ const AuthorizationPage = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your name!",
+                message: t("errorName"),
               },
             ]}
           >

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 import styles from "./AddCollectionPage.module.scss";
 import PageLayout from "../../components/PageLayout";
@@ -28,15 +29,30 @@ const AddCollectionPage = () => {
   const user = useSelector((state) => state.login);
   const isUserPage = +id === user.id || user.access === "admin";
 
-  const onAddCollection = () => {};
+  const onAddCollection = () => {
+    axios
+      .post("http://localhost:5000/collections", {
+        name,
+        description,
+        image,
+        theme,
+        UserId: id,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          const collectionId = response.data.id;
+          navigate(`/collection/${collectionId}`);
+        }
+      });
+  };
 
   return (
     <PageLayout>
-      <Title level={4}>{t("createСollection")}</Title>
+      <Title level={2}>{t("createСollection")}</Title>
       <Form
         form={form}
         layout="vertical"
-        // labelAlign="right"
+        labelAlign="right"
         size="large"
         name="addCollection"
         onFinish={onAddCollection}
@@ -44,14 +60,14 @@ const AddCollectionPage = () => {
       >
         <Form.Item
           name="name"
-          label={t("name")}
+          label={t("title")}
           onChange={(e) => {
             setName(e.target.value);
           }}
           rules={[
             {
               required: true,
-              message: "Please input Name",
+              message: t("errorTitle"),
             },
           ]}
         >
@@ -68,13 +84,17 @@ const AddCollectionPage = () => {
           <Input.TextArea />
         </Form.Item>
         <Form.Item label={t("theme")}>
-          <Select>
+          <Select
+            onChange={(value) => {
+              setTheme(value);
+            }}
+          >
             <Select.Option value="demo">Demo</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item
           name="upload"
-          label={t("image")}
+          label={t("cover")}
           valuePropName="fileList"
           // getValueFromEvent={normFile}
         >

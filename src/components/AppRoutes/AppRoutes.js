@@ -18,7 +18,7 @@ export default function AppRoutes() {
       <Route path="/collection/:collectionId" element={<CollectionPage />} />
       <Route path="/book/:bookId" element={<CollectionPage />} />
       <Route path="/admin" element={<AdminPage />} />
-      <Route path="/addcollection" element={<AddCollectionPage />} />
+      <Route path="/user/:id/create" element={<AddCollectionPage />} />
     </Routes>
   );
 }

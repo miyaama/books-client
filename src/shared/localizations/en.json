@@ -25,5 +25,15 @@
   "description": "Description",
   "theme": "Theme",
   "image": "Image",
-  "upload": "Upload"
+  "cover": "Cover",
+  "upload": "Upload",
+  "create": "Create",
+  "title" : "Title",
+  "errorTitle": "Please input title",
+  "errorPassword": "Please input your password",
+  "errorName": "Please input your name",
+  "errorEmail": "Please input your E-mail",
+  "errorValidEmail": "The input is not valid E-mail",
+  "tags": "Tags",
+  "addItem": "Add item"
 }

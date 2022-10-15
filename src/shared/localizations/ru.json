@@ -25,5 +25,18 @@
   "description": "Описание",
   "theme": "Тема",
   "image": "Изображение",
-  "upload": "Загрузить"
+  "cover": "Обложка",
+  "upload": "Загрузить",
+  "create": "Создать",
+  "title" : "Название",
+  "errorTitle": "Введите название",
+  "errorPassword": "Введите пароль",
+  "errorName":"Введите имя",
+  "errorEmail": "Введите Email",
+  "errorValidEmail": "Неверный E-mail",
+  "tags": "Теги",
+  "addItem": "Добавить айтем"
+
+
+
 }

@@ -13,7 +13,7 @@ const HomePage = () => {
 
   return (
     <PageLayout>
-      <Title level={4}>{t("largestCollections")}</Title>
+      <Title level={2}>{t("largestCollections")}</Title>
       <Row>
         <Col span={6}>
           <Card
@@ -35,7 +35,7 @@ const HomePage = () => {
           </Card>
         </Col>
       </Row>
-      <Title level={4}>{t("lastItems")}</Title>
+      <Title level={2}>{t("lastItems")}</Title>
     </PageLayout>
   );
 };
