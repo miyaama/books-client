@@ -18,7 +18,7 @@
   "myCollections": "Мои коллекции",
   "largestCollections": "Самые большие коллекции",
   "lastItems": "Последние добавленные",
-  "add": "Добавить +",
+  "add": "Добавить коллекцию",
   "admin": "Панель администратора",
   "collections": "Коллекции ",
   "createСollection": "Создание коллекции",
@@ -28,15 +28,18 @@
   "cover": "Обложка",
   "upload": "Загрузить",
   "create": "Создать",
-  "title" : "Название",
+  "title": "Название",
   "errorTitle": "Введите название",
   "errorPassword": "Введите пароль",
-  "errorName":"Введите имя",
+  "errorName": "Введите имя",
   "errorEmail": "Введите Email",
   "errorValidEmail": "Неверный E-mail",
   "tags": "Теги",
-  "addItem": "Добавить айтем"
-
+  "addItem": "Добавить айтем",
+  "editCollection": "Редактировать коллекцию",
+  "update": "Изменить",
+  "updateItem": "Изменить айтем",
+  "addComment": "Добавить комментарий"
 
 
 }

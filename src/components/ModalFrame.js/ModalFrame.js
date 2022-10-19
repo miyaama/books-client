@@ -6,12 +6,15 @@ export const ModalFrame = ({
   isModalOpen,
   handleOk,
   handleCancel,
+  okButtonProps,
+  title
 }) => (
   <Modal
-    title="Basic Modal"
+    title={title}
     open={isModalOpen}
     onOk={handleOk}
     onCancel={handleCancel}
+    okButtonProps={okButtonProps}
   >
     {children}
   </Modal>

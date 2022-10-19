@@ -45,7 +45,7 @@ const LoginPage = () => {
             IS_LOGIN_LOCAL_STORAGE,
             JSON.stringify({
               id: response.data.id,
-              name: response.data.name,
+              username: response.data.username,
               email: response.data.email,
               access: response.data.access,
               isLogin: true,
@@ -55,7 +55,7 @@ const LoginPage = () => {
           dispatch(
             login({
               id: response.data.id,
-              name: response.data.name,
+              username: response.data.username,
               email: email,
               access: response.data.access,
               isLogin: true,

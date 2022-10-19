@@ -31,7 +31,7 @@ const AuthorizationPage = () => {
       .post("http://localhost:5000/users/register", {
         email: email,
         password: password,
-        name: userName,
+        username: userName,
       })
       .then((response) => {
         if (response.data.message) {
@@ -46,7 +46,7 @@ const AuthorizationPage = () => {
             IS_LOGIN_LOCAL_STORAGE,
             JSON.stringify({
               id: response.data.id,
-              name: userName,
+              username: userName,
               email: email,
               access: ACCESS_USER,
               isLogin: true,
@@ -55,7 +55,7 @@ const AuthorizationPage = () => {
           dispatch(
             login({
               id: id,
-              name: userName,
+              username: userName,
               email: email,
               isLogin: true,
               access: ACCESS_USER,

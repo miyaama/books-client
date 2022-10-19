@@ -1,37 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Button, Table, Space, Typography } from "antd";
+import { Button, Table, Space, Typography, Form, Input, Tag } from "antd";
 import { DeleteOutlined, UnlockOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useParams, Link } from "react-router-dom";
 
 import styles from "./CollectionPage.module.scss";
 import PageLayout from "../../components/PageLayout";
-// import AddItem from "../../components/AddItem/AddItem";
 
 import { ModalFrame } from "../../components/ModalFrame.js/ModalFrame";
 
 const CollectionPage = () => {
   const [items, setItems] = useState([]);
-  const [collection, setCollection] = useState([]);
+  const [collection, setCollection] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isAddItemPopupOpen, setIsAddItemPopupOpen] = useState(false);
 
-  const navigate = useNavigate();
+  const [name, setName] = useState("");
 
   const { t } = useTranslation();
 
   const { collectionId } = useParams();
+  const [form] = Form.useForm();
 
   const { Title } = Typography;
 
-  // const currentUserId = userData?.id;
+  const [selected, setSelected] = useState([]);
 
   const columns = [
     {
       title: t("title"),
-      dataIndex: "title",
+      dataIndex: "name",
+      render: (text, record) => (
+        <Link state={{ record }} to={`/book/${record.id}`}>
+          {text}
+        </Link>
+      ),
+      sorter: (a, b) => a.name.length - b.name.length,
+      sortDirections: ["descend"],
     },
     {
       title: t("image"),
@@ -40,14 +46,29 @@ const CollectionPage = () => {
     {
       title: t("tags"),
       dataIndex: "tags",
-    },
-    {
-      title: t("status"),
-      dataIndex: "status",
-    },
-    {
-      title: t("access"),
-      dataIndex: "access",
+      filters: [
+        {
+          text: "Joe",
+          value: "Joe",
+        },
+        {
+          text: "Jim",
+          value: "Jim",
+        },
+      ],
+      onFilter: (value, record) => record.tags.indexOf(value) === 0,
+      render: (_, { tags }) => (
+        <>
+          {tags?.map((tag) => {
+            let color = tag.length > 5 ? "geekblue" : "green";
+            return (
+              <Tag color={color} key={tag}>
+                {tag.toUpperCase()}
+              </Tag>
+            );
+          })}
+        </>
+      ),
     },
   ];
 
@@ -56,39 +77,61 @@ const CollectionPage = () => {
 
   const loadItems = async () => {
     const response = await axios.get(
-      `http://localhost:5000/items/${collectionId}`
+      `http://localhost:5000/items/bycollection/${collectionId}`
     );
-    setItems(response.data?.[1]);
-    setCollection(response.data?.[0]);
+    setItems(response.data?.items);
+    setCollection(response.data?.collection[0]);
   };
 
   useEffect(() => {
     loadItems();
   }, []);
+  console.log("items", items[0])
 
-  console.log(collection);
+  const onSelectChange = (newSelectedRowKeys) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
 
   const rowSelection = {
     selectedRowKeys,
-    // onChange: onSelectChange,
+    onChange: onSelectChange,
   };
 
-  // const deleteUser = (id) => {
-  //   let newUsers = [...users];
+  const onDeleteItem = (id) => {
+    let newItems = [...items];
 
-  //   id.forEach((currentId) => {
-  //     axios.delete(
-  //       `https://itransition-task4-server.herokuapp.com/api/remove/${currentId}`
-  //     );
-  //     newUsers = newUsers.filter((user) => user.id !== currentId);
-  //   });
-  //   setUsers(newUsers);
-  //   id.forEach((userId) => {
-  //     if (userId === currentUserId) {
-  //       navigate("/");
-  //     }
-  //   });
-  // };
+    id.forEach((currentId) => {
+      axios.delete(`http://localhost:5000/items/${currentId}`);
+      newItems = newItems.filter((user) => user.id !== currentId);
+    });
+    setItems(newItems);
+  };
+
+  const onAddItem = () => {
+    axios
+      .post("http://localhost:5000/items", {
+        name,
+        CollectionId: collectionId,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          loadItems();
+          setIsAddItemPopupOpen(false);
+        }
+      });
+  };
+
+  const onEditItem = (item) => {
+    const { name, description, theme, image, id } = item;
+    // navigate(`/collection/${id}/update`, {
+    //   state: {
+    //     name,
+    //     description,
+    //     theme,
+    //     image,
+    //   },
+    // });
+  };
 
   return (
     <PageLayout>
@@ -98,7 +141,13 @@ const CollectionPage = () => {
       <div style={{ textAlign: "start" }}>
         <Space size="small">
           <Button onClick={toggleOppenessAddItemPopup}>{t("addItem")}</Button>
-          <DeleteOutlined style={{ fontSize: "20px" }} />
+          <Button onClick={() => onEditItem(selectedRowKeys)}>
+            {t("updateItem")}
+          </Button>
+          <DeleteOutlined
+            style={{ fontSize: "20px" }}
+            onClick={() => onDeleteItem(selectedRowKeys)}
+          />
         </Space>
       </div>
       <div>
@@ -110,15 +159,43 @@ const CollectionPage = () => {
         <Table
           rowSelection={rowSelection}
           columns={columns}
-          // dataSource={users.map((user) => ({ ...user, key: user.id }))}
+          dataSource={items.map((item) => ({ ...item, key: item.id }))}
         />
       </div>
 
       <ModalFrame
         isModalOpen={isAddItemPopupOpen}
         handleCancel={toggleOppenessAddItemPopup}
+        handleOk={onAddItem}
+        title={t("addItem")}
       >
-        <div>{`8======3`}</div>
+        <div>
+          <Form
+            form={form}
+            layout="vertical"
+            labelAlign="right"
+            size="large"
+            name="register"
+            className={styles.form}
+            id="category-editor-form"
+          >
+            <Form.Item
+              name="name"
+              label={t("title")}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              rules={[
+                {
+                  required: true,
+                  message: t("errorTitle"),
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
+        </div>
       </ModalFrame>
     </PageLayout>
   );

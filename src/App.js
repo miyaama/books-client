@@ -16,7 +16,7 @@ function App() {
     dispatch(
       login({
         id: isAuth.id,
-        name: isAuth.name,
+        username: isAuth.name,
         email: isAuth.email,
         isLogin: isAuth.isLogin,
         access: isAuth.access,

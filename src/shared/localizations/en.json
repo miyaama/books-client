@@ -18,7 +18,7 @@
   "myCollections": "My collections",
   "largestCollections": "The largest Collections",
   "lastItems": "Last added",
-  "add": "Add +",
+  "add": "Add collection",
   "admin": "Admin panel",
   "collections": "Collections ",
   "createСollection": "Create collection",
@@ -28,12 +28,16 @@
   "cover": "Cover",
   "upload": "Upload",
   "create": "Create",
-  "title" : "Title",
+  "title": "Title",
   "errorTitle": "Please input title",
   "errorPassword": "Please input your password",
   "errorName": "Please input your name",
   "errorEmail": "Please input your E-mail",
   "errorValidEmail": "The input is not valid E-mail",
   "tags": "Tags",
-  "addItem": "Add item"
+  "addItem": "Add item",
+  "editCollection": "Edit collection",
+  "update": "Update",
+  "updateItem": "Update item",
+  "addComment": "Add comment"
 }

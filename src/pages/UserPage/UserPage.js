@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Avatar, Card, Typography, Row, Col, Button } from "antd";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
@@ -18,6 +19,8 @@ const UserPage = () => {
   const { id } = useParams();
   const user = useSelector((state) => state.login);
   const isUserPage = +id === user.id || user.access === "admin";
+  const navigate = useNavigate();
+
 
   const loadCollections = async () => {
     const response = await axios.get(
@@ -37,10 +40,22 @@ const UserPage = () => {
     setCollections(newCollections);
   };
 
+  const onEditCollection = (collection) => {
+    const { name, description, theme, image, id } = collection;
+    navigate(`/collection/${id}/update`, {
+      state: {
+        name,
+        description,
+        theme,
+        image,
+      },
+    });
+  };
+
   return (
     <PageLayout>
       <Title level={2}>
-        {isUserPage ? t("myCollections") : t("collections") + (user.name || "")}
+        {isUserPage ? t("myCollections") : t("collections") + (user.username || "")}
       </Title>
       {isUserPage && (
         <Link to={`/user/${user?.id}/create`}>
@@ -63,7 +78,7 @@ const UserPage = () => {
               actions={
                 isUserPage
                   ? [
-                      <EditOutlined key="edit" />,
+                      <EditOutlined key="edit" onClick={() => onEditCollection(collection)} />,
                       <DeleteOutlined
                         key="delete"
                         onClick={() => onDeleteCollection(collection.id)}

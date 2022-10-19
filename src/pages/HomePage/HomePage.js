@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { Avatar, Card, Typography, Row, Col } from "antd";
+import axios from "axios";
 
 // import styles from "./HomePage.module.scss"
 import PageLayout from "../../components/PageLayout";
@@ -8,9 +10,20 @@ import PageLayout from "../../components/PageLayout";
 const { Meta } = Card;
 const { Title } = Typography;
 
+
+
 const HomePage = () => {
   const { t } = useTranslation();
 
+  const loadCollections = async () => {
+    const response = await axios.get(`http://localhost:5000/items/lastitems`);
+    console.log(response);
+  };
+  
+  useEffect(() => {
+    loadCollections();
+  }, []);
+  
   return (
     <PageLayout>
       <Title level={2}>{t("largestCollections")}</Title>
