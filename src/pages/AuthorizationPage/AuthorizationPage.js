@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Button, Form, Input, Typography } from "antd";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
@@ -10,25 +9,24 @@ import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys"
 import styles from "./AuthorizationPage.module.scss";
 import PageLayout from "../../components/PageLayout";
 import { login } from "../../store/slices";
-import { ACCESS_USER } from "../../shared/constants";
+import { ACCESS_USER, BACKEND_URL } from "../../shared/constants";
 
 const { Title } = Typography;
 
 const AuthorizationPage = () => {
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [form] = Form.useForm();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [error, setError] = useState("");
-
   const { t } = useTranslation();
 
   const register = () => {
     axios
-      .post("http://localhost:5000/users/register", {
+      .post(`${BACKEND_URL}/users/register`, {
         email: email,
         password: password,
         username: userName,

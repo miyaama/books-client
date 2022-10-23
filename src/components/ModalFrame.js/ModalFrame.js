@@ -1,21 +1,8 @@
 import { Modal } from "antd";
 import React from "react";
 
-export const ModalFrame = ({
-  children,
-  isModalOpen,
-  handleOk,
-  handleCancel,
-  okButtonProps,
-  title
-}) => (
-  <Modal
-    title={title}
-    open={isModalOpen}
-    onOk={handleOk}
-    onCancel={handleCancel}
-    okButtonProps={okButtonProps}
-  >
+export const ModalFrame = ({ children, isModalOpen, handleCancel, title }) => (
+  <Modal title={title} open={isModalOpen} onCancel={handleCancel} footer={null}>
     {children}
   </Modal>
 );

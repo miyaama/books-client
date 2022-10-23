@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button, Form, Input, Typography } from "antd";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -11,21 +10,21 @@ import { login } from "../../store/slices";
 import styles from "./LoginPage.module.scss";
 import PageLayout from "../../components/PageLayout";
 import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys";
+import { BACKEND_URL } from "../../shared/constants";
 
 const { Title, Text } = Typography;
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const onLogin = () => {
     axios
-      .post("http://localhost:5000/users/login", {
+      .post(`${BACKEND_URL}/users/login`, {
         email: email,
         password: password,
       })
@@ -36,7 +35,7 @@ const LoginPage = () => {
             setError("");
           }, 3000);
         } else if (response.data.status === "blocked") {
-          setError("Your account is blocked");
+          setError(t("errorBloked"));
           setTimeout(() => {
             setError("");
           }, 3000);
@@ -88,7 +87,7 @@ const LoginPage = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Email!",
+                message: t("errorEmail"),
               },
             ]}
           >
@@ -105,7 +104,7 @@ const LoginPage = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Password!",
+                message: t("errorPassword"),
               },
             ]}
           >

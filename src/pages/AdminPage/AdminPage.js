@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, Table, Space } from "antd";
+import { Button, Table, Space, Typography } from "antd";
 import { DeleteOutlined, UnlockOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 
 import PageLayout from "../../components/PageLayout";
-// import styles from "./AdminPage.module.scss";
+import styles from "./AdminPage.module.scss";
 import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys";
 import { actionAddAdmin, actionRemoveAdmin, logout } from "../../store/slices";
-import { ACCESS_ADMIN, ACCESS_USER } from "../../shared/constants";
+import { ACCESS_ADMIN, ACCESS_USER, BACKEND_URL } from "../../shared/constants";
 
 const AdminPage = () => {
   const [users, setUsers] = useState([]);
@@ -18,9 +18,11 @@ const AdminPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const userData = JSON.parse(localStorage.getItem(IS_LOGIN_LOCAL_STORAGE));
 
+  const userData = JSON.parse(localStorage.getItem(IS_LOGIN_LOCAL_STORAGE));
   const currentUserId = userData?.id;
+  const { Title } = Typography;
+
 
   const columns = [
     {
@@ -46,7 +48,7 @@ const AdminPage = () => {
   ];
 
   const loadUsers = async () => {
-    const response = await axios.get("http://localhost:5000/users");
+    const response = await axios.get(`${BACKEND_URL}/users`);
     setUsers(response.data);
   };
 
@@ -67,7 +69,7 @@ const AdminPage = () => {
     let newUsers = [...users];
 
     id.forEach((currentId) => {
-      axios.delete(`http://localhost:5000/users/${currentId}`);
+      axios.delete(`${BACKEND_URL}/users/${currentId}`);
       newUsers = newUsers.filter((user) => user.id !== currentId);
     });
     setUsers(newUsers);
@@ -89,7 +91,7 @@ const AdminPage = () => {
         }
         return { ...user, status };
       });
-      axios.put(`http://localhost:5000/users/update/${currentId}`, {
+      axios.put(`${BACKEND_URL}/users/update/${currentId}`, {
         status: "active",
         type: "status",
       });
@@ -101,7 +103,7 @@ const AdminPage = () => {
   const blockedUser = (id) => {
     let newUsers = [...users];
     id.forEach((currentId) => {
-      axios.put(`http://localhost:5000/users/update/${currentId}`, {
+      axios.put(`${BACKEND_URL}/users/update/${currentId}`, {
         status: "blocked",
         type: "status",
       });
@@ -133,7 +135,7 @@ const AdminPage = () => {
         }
         return { ...user, access };
       });
-      axios.put(`http://localhost:5000/users/update/${currentId}`, {
+      axios.put(`${BACKEND_URL}/users/update/${currentId}`, {
         status: "admin",
         type: "access",
       });
@@ -162,7 +164,7 @@ const AdminPage = () => {
         }
         return { ...user, access };
       });
-      axios.put(`http://localhost:5000/users/update/${currentId}`, {
+      axios.put(`${BACKEND_URL}/users/update/${currentId}`, {
         status: "user",
         type: "access",
       });
@@ -183,9 +185,9 @@ const AdminPage = () => {
   return (
     <PageLayout>
       <div>
-        <h1 style={{ padding: "15px", textAlign: "center" }}>
+        <Title level={2} className={styles.title}>
           {t("usersList")}
-        </h1>
+        </Title>
         <div style={{ textAlign: "start" }}>
           <Space size="small">
             <Button onClick={() => addAdmin(selectedRowKeys)}>
@@ -199,20 +201,16 @@ const AdminPage = () => {
             </Button>
             <UnlockOutlined
               onClick={() => unblockedUser(selectedRowKeys)}
-              style={{ fontSize: "20px" }}
+              className={styles.icon}
             />
             <DeleteOutlined
               onClick={() => deleteUser(selectedRowKeys)}
-              style={{ fontSize: "20px" }}
+              className={styles.icon}
             />
           </Space>
         </div>
         <div>
-          <div
-            style={{
-              marginBottom: 25,
-            }}
-          ></div>
+          <div className={styles.table}></div>
           <Table
             rowSelection={rowSelection}
             columns={columns}

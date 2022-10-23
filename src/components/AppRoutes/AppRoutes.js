@@ -8,6 +8,7 @@ import CollectionPage from "../../pages/CollectionPage";
 import AdminPage from "../../pages/AdminPage";
 import AddCollectionPage from "../../pages/AddCollectionPage";
 import BookPage from "../../pages/BookPage"
+import SearchPage from "../../pages/SearchPage";
 
 
 export default function AppRoutes() {
@@ -22,6 +23,7 @@ export default function AppRoutes() {
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/user/:id/create" element={<AddCollectionPage />} />
       <Route path="/collection/:id/update" element={<AddCollectionPage />} />
+      <Route path="/search" element={<SearchPage />} />
     </Routes>
   );
 }

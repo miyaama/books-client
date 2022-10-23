@@ -34,12 +34,27 @@
   "errorName": "Введите имя",
   "errorEmail": "Введите Email",
   "errorValidEmail": "Неверный E-mail",
+  "errorBloked": "Ваш аккаунт заблокирован",
   "tags": "Теги",
   "addItem": "Добавить айтем",
   "editCollection": "Редактировать коллекцию",
   "update": "Изменить",
   "updateItem": "Изменить айтем",
-  "addComment": "Добавить комментарий"
+  "addComment": "Добавить комментарий",
+  "AddTags": "Добавить теги",
+  "InputTag": "Введите название",
+  "tag": "Тэг",
+  "cancel": "Отмена",
+  "collection": "Коллекция",
+  "author": "Автор",
+  "cloudTags": "Облако тегов",
+  "searchResults": "Результаты поиска"
+
+
+
+
+
+
 
 
 }

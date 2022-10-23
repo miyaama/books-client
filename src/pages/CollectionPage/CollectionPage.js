@@ -1,31 +1,50 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Table, Space, Typography, Form, Input, Tag } from "antd";
-import { DeleteOutlined, UnlockOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Table,
+  Space,
+  Typography,
+  Form,
+  Input,
+  Tag,
+  AutoComplete,
+} from "antd";
+import {
+  DeleteOutlined,
+  MinusCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation} from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import styles from "./CollectionPage.module.scss";
 import PageLayout from "../../components/PageLayout";
-
 import { ModalFrame } from "../../components/ModalFrame.js/ModalFrame";
+import { BACKEND_URL } from "../../shared/constants";
 
 const CollectionPage = () => {
+  const [form] = Form.useForm();
   const [items, setItems] = useState([]);
   const [collection, setCollection] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isAddItemPopupOpen, setIsAddItemPopupOpen] = useState(false);
-
   const [name, setName] = useState("");
-
   const { t } = useTranslation();
-
   const { collectionId } = useParams();
-  const [form] = Form.useForm();
+  const user = useSelector((state) => state.login);
+
+  const tags = useSelector(({ home }) =>
+    home.tags?.map((tag) => ({ label: tag.name, value: tag.name }))
+  );
+  
+  const isUserPage = +collection.UserId === user.id || user.access === "admin";
+  console.log("isUserPage", isUserPage);
+  console.log("collection.UserId", +collection.UserId);
+  console.log("collection.UserId", +collection.UserId);
 
   const { Title } = Typography;
-
-  const [selected, setSelected] = useState([]);
 
   const columns = [
     {
@@ -48,8 +67,8 @@ const CollectionPage = () => {
       dataIndex: "tags",
       filters: [
         {
-          text: "Joe",
-          value: "Joe",
+          text: t("classic"),
+          value: t("classic"),
         },
         {
           text: "Jim",
@@ -77,7 +96,7 @@ const CollectionPage = () => {
 
   const loadItems = async () => {
     const response = await axios.get(
-      `http://localhost:5000/items/bycollection/${collectionId}`
+      `${BACKEND_URL}/items/bycollection/${collectionId}`
     );
     setItems(response.data?.items);
     setCollection(response.data?.collection[0]);
@@ -86,7 +105,6 @@ const CollectionPage = () => {
   useEffect(() => {
     loadItems();
   }, []);
-  console.log("items", items[0])
 
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -101,28 +119,31 @@ const CollectionPage = () => {
     let newItems = [...items];
 
     id.forEach((currentId) => {
-      axios.delete(`http://localhost:5000/items/${currentId}`);
+      axios.delete(`${BACKEND_URL}/items/${currentId}`);
       newItems = newItems.filter((user) => user.id !== currentId);
     });
     setItems(newItems);
   };
 
-  const onAddItem = () => {
+  const onAddItem = (values) => {
+    console.log("values: ", values);
     axios
-      .post("http://localhost:5000/items", {
+      .post(`${BACKEND_URL}/items`, {
         name,
+        tags: values?.tags?.map((current) => current.tag) ?? [],
         CollectionId: collectionId,
       })
       .then((response) => {
         if (response.status === 200) {
           loadItems();
+          form.resetFields();
           setIsAddItemPopupOpen(false);
         }
       });
   };
 
   const onEditItem = (item) => {
-    const { name, description, theme, image, id } = item;
+    // const { name, description, theme, image, id } = item;
     // navigate(`/collection/${id}/update`, {
     //   state: {
     //     name,
@@ -133,29 +154,34 @@ const CollectionPage = () => {
     // });
   };
 
+  // const onChangeTags = () => {
+  //   const fields = form.getFieldsValue();
+  //   const newTags = [];
+  //   fields.tags?.map((item) => newTags.push(item.tag));
+  //   setTags(newTags);
+  // };
+  // console.log(tags);
+
+
   return (
     <PageLayout>
       <Title level={2}>{collection.name}</Title>
       <Title level={5}>{t("theme") + ": " + collection.theme}</Title>
       <p>{collection.description}</p>
-      <div style={{ textAlign: "start" }}>
+      {isUserPage && (<div className={styles.bar}>
         <Space size="small">
           <Button onClick={toggleOppenessAddItemPopup}>{t("addItem")}</Button>
           <Button onClick={() => onEditItem(selectedRowKeys)}>
             {t("updateItem")}
           </Button>
           <DeleteOutlined
-            style={{ fontSize: "20px" }}
+            className={styles.icon}
             onClick={() => onDeleteItem(selectedRowKeys)}
           />
         </Space>
-      </div>
+      </div>)  }
       <div>
-        <div
-          style={{
-            marginBottom: 25,
-          }}
-        ></div>
+        <div className={styles.table}></div>
         <Table
           rowSelection={rowSelection}
           columns={columns}
@@ -166,8 +192,8 @@ const CollectionPage = () => {
       <ModalFrame
         isModalOpen={isAddItemPopupOpen}
         handleCancel={toggleOppenessAddItemPopup}
-        handleOk={onAddItem}
         title={t("addItem")}
+        cancelText={t("cancel")}
       >
         <div>
           <Form
@@ -177,6 +203,7 @@ const CollectionPage = () => {
             size="large"
             name="register"
             className={styles.form}
+            onFinish={onAddItem}
             id="category-editor-form"
           >
             <Form.Item
@@ -193,6 +220,49 @@ const CollectionPage = () => {
               ]}
             >
               <Input />
+            </Form.Item>
+            <Form.List name="tags">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <Space key={key} className={styles.space} align="baseline">
+                      <Form.Item
+                        {...restField}
+                        name={[name, "tag"]}
+                        rules={[
+                          {
+                            required: true,
+                            message: t("InputTag"),
+                          },
+                        ]}
+                      >
+                        <AutoComplete
+                          name={[name, "tag"]}
+                          filterOption
+                          options={tags}
+                          className={styles.autoComplete}
+                        />
+                      </Form.Item>
+                      <MinusCircleOutlined onClick={() => remove(name)} />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      {t("AddTags")}
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                {t("addItem")}
+              </Button>
             </Form.Item>
           </Form>
         </div>

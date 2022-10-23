@@ -19,6 +19,12 @@ export const loginSlice = createSlice({
     logout: (state) => {
       return initialState;
     },
+    actionAddAdmin: (state) => {
+      return { ...state, access: "admin" };
+    },
+    actionRemoveAdmin: (state) => {
+      return { ...state, access: "user" };
+    },
   },
 });
 

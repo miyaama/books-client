@@ -93,9 +93,7 @@ const PageHeader = () => {
       <div className={styles.buttons}>
         <Select
           defaultValue={localStorage.getItem(LANGUAGE) || "en"}
-          style={{
-            width: 70,
-          }}
+          className={styles.select}
           onChange={(value) => {
             changeLanguage(value);
           }}

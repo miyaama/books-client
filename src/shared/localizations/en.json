@@ -34,10 +34,19 @@
   "errorName": "Please input your name",
   "errorEmail": "Please input your E-mail",
   "errorValidEmail": "The input is not valid E-mail",
+  "errorBloked": "Your account is blocked",
   "tags": "Tags",
   "addItem": "Add item",
   "editCollection": "Edit collection",
   "update": "Update",
   "updateItem": "Update item",
-  "addComment": "Add comment"
+  "addComment": "Add comment",
+  "AddTags": "Add tags",
+  "InputTag": "Input tag",
+  "tag": "Tag",
+  "cancel": "Cancel",
+  "collection": "Collection",
+  "author": "Author",
+  "cloudTags": "Tag Cloud",
+  "searchResults": "Search results"
 }
