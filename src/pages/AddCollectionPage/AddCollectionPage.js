@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Typography, Button, Form, Input, Upload, Select } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -20,15 +20,24 @@ const AddCollectionPage = () => {
   const [description, setDescription] = useState(state?.description || "");
   const [theme, setTheme] = useState(state?.theme || "");
   const [image, setImage] = useState(state?.image || "");
-  const [error, setError] = useState("");
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const user = useSelector((state) => state.login);
 
-  const isUserPage = +id === user.id || user.access === "admin";
+  const currentUserId = state ? state.UserId : id;
+  const isUserPage = +currentUserId === user.id || user.access === "admin";
+
+  useEffect(() => {
+    if (!isUserPage) {
+      navigate("/");
+    }
+  }, [isUserPage, navigate]);
+
+  if (!isUserPage) {
+    return null;
+  }
 
   const onAddCollection = () => {
     axios
@@ -56,7 +65,6 @@ const AddCollectionPage = () => {
         theme,
       })
       .then((response) => {
-        console.log("response: ", response);
         if (response.status === 200) {
           navigate(`/collection/${id}`);
         }
@@ -95,7 +103,6 @@ const AddCollectionPage = () => {
         >
           <Input value={name} />
         </Form.Item>
-        {error && <span>{error}</span>}
         <Form.Item
           name="description"
           label={t("description")}
@@ -112,12 +119,15 @@ const AddCollectionPage = () => {
             }}
           >
             <Select.Option value="history">{t("history")}</Select.Option>
-            <Select.Option value="fantasy">{t("fantasy")}</Select.Option>
-            <Select.Option value="science-fiction">
-              {t("science-fiction")}
+            <Select.Option value="nonfiction">{t("nonfiction")}</Select.Option>
+            <Select.Option value="fiction">{t("fiction")}</Select.Option>
+            <Select.Option value="20thCentury">
+              {t("20thCentury")}
             </Select.Option>
-            <Select.Option value="nonfiction">{t("Nonfiction ")}</Select.Option>
-            <Select.Option value="fiction">{t("Fiction ")}</Select.Option>
+            <Select.Option value="19thCentury">
+              {t("19thCentury")}
+            </Select.Option>
+            <Select.Option value="modern">{t("modern")}</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item

@@ -1,7 +1,27 @@
 .like {
-  font-size: 20px;
+  font-size: 25px;
+  color: lightgrey !important;
 }
 
 .onLike {
-  color: red;
+  color: red !important;
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tagTitle {
+  margin-bottom: 0 !important;
+  margin-right: 10px;
+}
+
+.text {
+  margin: 0;
+}
+
+.title {
+ margin: 0;
 }

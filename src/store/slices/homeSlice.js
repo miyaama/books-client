@@ -1,7 +1,6 @@
 import {
   createSlice,
   createAsyncThunk,
-  createSelector,
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -20,6 +19,9 @@ export const homeSlice = createSlice({
     // addCollections: (state, action) => {
     //   state.collections = action.payload;
     // },
+    addItem: (state, action) => {
+      state.items = [action.payload, ...state.items.slice(0, 5)];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchTags.fulfilled, (state, { payload }) => {
@@ -32,7 +34,6 @@ export const homeSlice = createSlice({
       state.items = payload;
     });
   },
-  
 });
 
 export const fetchTags = createAsyncThunk("tags/fetch", async () => {
@@ -40,16 +41,19 @@ export const fetchTags = createAsyncThunk("tags/fetch", async () => {
   return tags.data;
 });
 
-export const fetchCollections = createAsyncThunk("collections/fetch", async () => {
-  const collections = await axios.get(`${BACKEND_URL}/collections/largest`);
-  return collections.data;
-});
+export const fetchCollections = createAsyncThunk(
+  "collections/fetch",
+  async () => {
+    const collections = await axios.get(`${BACKEND_URL}/collections/largest`);
+    return collections.data;
+  }
+);
 
 export const fetchItems = createAsyncThunk("items/fetch", async () => {
   const items = await axios.get(`${BACKEND_URL}/items/lastitems`);
   return items.data;
 });
 
-export const { addCollections } = homeSlice.actions;
+export const { addCollections, addItem } = homeSlice.actions;
 
 export const homeReducer = homeSlice.reducer;

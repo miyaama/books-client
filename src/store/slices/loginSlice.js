@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLogin: false,
-  name: "",
+  username: "",
   id: "",
   email: "",
   access: "",
@@ -16,7 +16,7 @@ export const loginSlice = createSlice({
       return action.payload;
     },
 
-    logout: (state) => {
+    logout: () => {
       return initialState;
     },
     actionAddAdmin: (state) => {

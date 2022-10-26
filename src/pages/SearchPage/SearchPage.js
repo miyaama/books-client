@@ -1,20 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Table, Typography } from "antd";
+import { Table, Typography, Tag } from "antd";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 
 import PageLayout from "../../components/PageLayout";
 import styles from "./SearchPage.module.scss";
+import { BACKEND_URL } from "../../shared/constants";
 
 const SearchPage = () => {
+  const { quest } = useParams();
+  const [items, setItems] = useState([]);
   const { t } = useTranslation();
-
   const { Title } = Typography;
 
   const columns = [
     {
-      title: t("name"),
+      title: t("title"),
       dataIndex: "name",
       render: (text, record) => (
         <Link state={{ record }} to={`/book/${record.id}`}>
@@ -23,20 +26,39 @@ const SearchPage = () => {
       ),
     },
     {
-      title: t("collection"),
-      dataIndex: "collection",
+      title: t("image"),
+      dataIndex: "image",
     },
     {
-      title: t("author"),
-      dataIndex: "author",
+      title: t("tags"),
+      dataIndex: "tags",
+      render: (_, { tags }) => (
+        <>
+          {tags?.map((tag) => {
+            let color = tag.length > 5 ? "geekblue" : "green";
+            return (
+              <Tag color={color} key={tag}>
+                {tag.toUpperCase()}
+              </Tag>
+            );
+          })}
+        </>
+      ),
     },
   ];
+  
 
-  const loadItems = async () => {};
+  const loadItems = async (tag) => {
+    console.log("quest in loaditems: ", tag)
+    const response = await axios.get(`${BACKEND_URL}/items/bytag/${tag}`);
+    setItems(response.data);
+  };
 
   useEffect(() => {
-    loadItems();
+    loadItems(quest);
   }, []);
+
+  console.log("items: ", items)
 
   return (
     <PageLayout>
@@ -48,7 +70,7 @@ const SearchPage = () => {
           <div className={styles.table}></div>
           <Table
             columns={columns}
-            // dataSource={users.map((user) => ({ ...user, key: user.id }))}
+            dataSource={items.map((item) => ({ ...item, key: item.id }))}
           />
         </div>
       </div>

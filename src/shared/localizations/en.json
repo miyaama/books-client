@@ -36,6 +36,7 @@
   "errorValidEmail": "The input is not valid E-mail",
   "errorBloked": "Your account is blocked",
   "tags": "Tags",
+  "tagsOnPage": "Tags: ",
   "addItem": "Add item",
   "editCollection": "Edit collection",
   "update": "Update",
@@ -48,5 +49,17 @@
   "collection": "Collection",
   "author": "Author",
   "cloudTags": "Tag Cloud",
-  "searchResults": "Search results"
+  "searchResults": "Search results",
+  "comments": "comments",
+  "comment": "comment",
+  "history": "History",
+  "nonfiction": "Nonfiction",
+  "fiction": "Fiction",
+  "20thCentury" : "20th Century",
+  "19thCentury" : "19th Century",
+  "28thCentury" : "18th Century",
+  "modern" : "Modern",
+  "classic" : "classic",
+  "novel": "novel",
+  "detective": "detective"
 }

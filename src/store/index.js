@@ -6,6 +6,6 @@ export const store = configureStore({
   reducer: {
     login: loginReducer,
     home: homeReducer,
-    collections: collectionsReducer
+    collections: collectionsReducer,
   },
 });

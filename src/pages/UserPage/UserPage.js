@@ -23,9 +23,7 @@ const UserPage = () => {
   const isUserPage = +id === user.id || user.access === "admin";
 
   const loadCollections = async () => {
-    const response = await axios.get(
-      `${BACKEND_URL}/collections/byuser/${id}`
-    );
+    const response = await axios.get(`${BACKEND_URL}/collections/byuser/${id}`);
     setCollections(response.data);
   };
 
@@ -41,40 +39,43 @@ const UserPage = () => {
   };
 
   const onEditCollection = (collection) => {
-    const { name, description, theme, image, id } = collection;
-    navigate(`/collection/${id}/update`, {
+    const { name, description, theme, image, UserId } = collection;
+    navigate(`/collection/${collection.id}/update`, {
       state: {
         name,
         description,
         theme,
         image,
+        UserId,
       },
     });
   };
 
   return (
     <PageLayout>
-      <Title level={2}>
-        {isUserPage
-          ? t("myCollections")
-          : t("collections") + (user.username || "")}
-      </Title>
-      {isUserPage && (
-        <Link to={`/user/${user?.id}/create`}>
-          <Button>{t("add")}</Button>{" "}
-        </Link>
-      )}
-      <Row>
+      <Row justify="space-between" align="middle">
+        <Title level={2}>
+          {isUserPage
+            ? t("myCollections")
+            : t("collections") + (user.username || "")}
+        </Title>
+        {isUserPage && (
+          <Link to={`/user/${user?.id}/create`}>
+            <Button type="primary">{t("add")}</Button>{" "}
+          </Link>
+        )}
+      </Row>
+      <Row gutter={[16, 24]}>
         {collections.map((collection) => (
-          <Col key={collection.id} span={6}>
+          <Col key={collection.id} xs={{ span: 24}} sm={{ span: 12}} md={{ span: 8}} xl={{ span: 6}}>
             <Card
               className={styles.card}
-              cover={
-                <img
-                  alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                />
-              }
+              // cover={
+              //   <img
+              //     alt="example"
+              //     src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              //   />
+              // }
               actions={
                 isUserPage
                   ? [

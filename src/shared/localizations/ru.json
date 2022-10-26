@@ -36,6 +36,7 @@
   "errorValidEmail": "Неверный E-mail",
   "errorBloked": "Ваш аккаунт заблокирован",
   "tags": "Теги",
+  "tagsOnPage": "Теги: ",
   "addItem": "Добавить айтем",
   "editCollection": "Редактировать коллекцию",
   "update": "Изменить",
@@ -48,13 +49,17 @@
   "collection": "Коллекция",
   "author": "Автор",
   "cloudTags": "Облако тегов",
-  "searchResults": "Результаты поиска"
-
-
-
-
-
-
-
-
+  "searchResults": "Результаты поиска",
+  "comments": "комментария",
+  "comment": "комментарий",
+  "history": "Историческая литература",
+  "nonfiction": "Нон-фикшн",
+  "fiction": "Художественная литература",
+  "20thCentury" : "20 век",
+  "19thCentury" : "19 век",
+  "28thCentury" : "18 век",
+  "modern" : "Современная литература",
+  "classic" : "классика",
+  "novel": "роман",
+  "detective": "детектив"
 }

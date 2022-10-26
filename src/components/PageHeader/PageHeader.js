@@ -1,4 +1,4 @@
-import { Button, Typography, Select, Menu, Layout } from "antd";
+import { Button, Typography, Select, Menu, Layout, Switch } from "antd";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +8,11 @@ import styles from "./PageHeader.module.scss";
 import {
   LANGUAGE,
   IS_LOGIN_LOCAL_STORAGE,
-} from "../../shared/constants/localStorageKeys";
-import { logout } from "../../store/slices";
+  THEME,
+  LIGHT_THEME,
+  DARK_THEME,
+} from "../../shared/constants";
+import { logout, changeTheme } from "../../store/slices";
 import { ACCESS_ADMIN } from "../../shared/constants";
 
 const { Title } = Typography;
@@ -63,9 +66,18 @@ const PageHeader = () => {
 
   const items = getmenuItems(user, t);
 
+  const theme = localStorage.getItem(THEME) || LIGHT_THEME;
+
+  const isLightTheme = theme === LIGHT_THEME;
+
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
     localStorage.setItem(LANGUAGE, language);
+  };
+
+  const changeTheme = (lightTheme) => {
+    localStorage.setItem(THEME, lightTheme ? LIGHT_THEME : DARK_THEME);
+    window.location.reload();
   };
 
   const onLogin = () => {
@@ -91,6 +103,12 @@ const PageHeader = () => {
         className={styles.menu}
       />
       <div className={styles.buttons}>
+        <Switch
+          checkedChildren={<span> &#9788; </span>}
+          unCheckedChildren={<span> &#9789; </span>}
+          defaultChecked={isLightTheme}
+          onChange={(value) => changeTheme(value)}
+        />
         <Select
           defaultValue={localStorage.getItem(LANGUAGE) || "en"}
           className={styles.select}

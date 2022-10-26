@@ -1,11 +1,16 @@
-@import "~antd/dist/antd.css";
-/* @import '~antd/dist/antd.dark.css'; */
-
 .App {
   height: 100vh;
   width: 100vw;
 }
 
 h2.ant-typography {
-  margin: 10px 0 30px 0;
+  margin: 25px 0 25px 0 !important;
+}
+
+h3.ant-typography {
+  margin: 25px 0 25px 0 !important;
+}
+
+.tag-cloud-tag {
+  cursor: pointer !important;
 }

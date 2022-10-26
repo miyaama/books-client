@@ -1,7 +1,11 @@
-.card {
-  max-width: 500px;
-}
-
 .title {
   height: 100px;
+}
+
+.simple-cloud .tag-cloud-tag {
+  cursor: pointer !important;
+}
+
+.cloud {
+  text-align: center;
 }

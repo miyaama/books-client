@@ -23,7 +23,7 @@ export default function AppRoutes() {
       <Route path="/admin" element={<AdminPage />} />
       <Route path="/user/:id/create" element={<AddCollectionPage />} />
       <Route path="/collection/:id/update" element={<AddCollectionPage />} />
-      <Route path="/search" element={<SearchPage />} />
+      <Route path="/search/:quest" element={<SearchPage />} />
     </Routes>
   );
 }

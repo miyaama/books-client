@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, Table, Space, Typography } from "antd";
+import { Button, Table, Typography, Row, Col } from "antd";
 import { DeleteOutlined, UnlockOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import PageLayout from "../../components/PageLayout";
 import styles from "./AdminPage.module.scss";
@@ -18,11 +18,12 @@ const AdminPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const user = useSelector((state) => state.login);
 
   const userData = JSON.parse(localStorage.getItem(IS_LOGIN_LOCAL_STORAGE));
   const currentUserId = userData?.id;
   const { Title } = Typography;
-
+  const admin = user.access === "admin";
 
   const columns = [
     {
@@ -53,8 +54,15 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
+    if (!admin) {
+      navigate("/");
+    }
     loadUsers();
-  }, []);
+  }, [admin, navigate]);
+
+  if (!admin) {
+    return null;
+  }
 
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -188,27 +196,35 @@ const AdminPage = () => {
         <Title level={2} className={styles.title}>
           {t("usersList")}
         </Title>
-        <div style={{ textAlign: "start" }}>
-          <Space size="small">
+        <Row className={styles.bar} gutter={[8, 8]} align="middle">
+          <Col>
             <Button onClick={() => addAdmin(selectedRowKeys)}>
               {t("addAdmin")}
             </Button>
+          </Col>
+          <Col>
             <Button onClick={() => removeAdmin(selectedRowKeys)}>
               {t("removeAdmin")}
             </Button>
+          </Col>
+          <Col>
             <Button onClick={() => blockedUser(selectedRowKeys)}>
               {t("blockUser")}
             </Button>
+          </Col>
+          <Col>
             <UnlockOutlined
               onClick={() => unblockedUser(selectedRowKeys)}
               className={styles.icon}
             />
+          </Col>
+          <Col>
             <DeleteOutlined
               onClick={() => deleteUser(selectedRowKeys)}
               className={styles.icon}
             />
-          </Space>
-        </div>
+          </Col>
+        </Row>
         <div>
           <div className={styles.table}></div>
           <Table

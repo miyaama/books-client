@@ -9,6 +9,8 @@ import {
   Input,
   Tag,
   AutoComplete,
+  Row,
+  Col,
 } from "antd";
 import {
   DeleteOutlined,
@@ -16,33 +18,34 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { useParams, Link, useLocation} from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useParams, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import styles from "./CollectionPage.module.scss";
 import PageLayout from "../../components/PageLayout";
 import { ModalFrame } from "../../components/ModalFrame.js/ModalFrame";
 import { BACKEND_URL } from "../../shared/constants";
+import { addItem } from "../../store/slices";
+
+const ADD_ITEM_POPUP_TYPE = "ADD_ITEM_POPUP_TYPE";
+const UPDATE_ITEM_POPUP_TYPE = "UPDATE_ITEM_POPUP_TYPE";
 
 const CollectionPage = () => {
   const [form] = Form.useForm();
   const [items, setItems] = useState([]);
   const [collection, setCollection] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [isAddItemPopupOpen, setIsAddItemPopupOpen] = useState(false);
-  const [name, setName] = useState("");
+  const [openPopupType, setOpenPopupType] = useState(null);
   const { t } = useTranslation();
   const { collectionId } = useParams();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.login);
 
   const tags = useSelector(({ home }) =>
     home.tags?.map((tag) => ({ label: tag.name, value: tag.name }))
   );
-  
+
   const isUserPage = +collection.UserId === user.id || user.access === "admin";
-  console.log("isUserPage", isUserPage);
-  console.log("collection.UserId", +collection.UserId);
-  console.log("collection.UserId", +collection.UserId);
 
   const { Title } = Typography;
 
@@ -71,9 +74,14 @@ const CollectionPage = () => {
           value: t("classic"),
         },
         {
-          text: "Jim",
-          value: "Jim",
+          text: t("novel"),
+          value: t("novel"),
         },
+        {
+          text: t("detective"),
+          value: t("detective"),
+        },
+
       ],
       onFilter: (value, record) => record.tags.indexOf(value) === 0,
       render: (_, { tags }) => (
@@ -91,8 +99,19 @@ const CollectionPage = () => {
     },
   ];
 
-  const toggleOppenessAddItemPopup = () =>
-    setIsAddItemPopupOpen((value) => !value);
+  const openAddItemPopup = () => setOpenPopupType(ADD_ITEM_POPUP_TYPE);
+  const openUpdateItemPopup = () => {
+    const item = items.filter(
+      (element) => element.id === selectedRowKeys[0]
+    )[0];
+    form.setFieldValue(
+      "tags",
+      item.tags.map((tag) => ({ tag }))
+    );
+    form.setFieldValue("name", item.name);
+    setOpenPopupType(UPDATE_ITEM_POPUP_TYPE);
+  };
+  const closePopup = () => setOpenPopupType(null);
 
   const loadItems = async () => {
     const response = await axios.get(
@@ -126,32 +145,43 @@ const CollectionPage = () => {
   };
 
   const onAddItem = (values) => {
-    console.log("values: ", values);
     axios
       .post(`${BACKEND_URL}/items`, {
-        name,
+        name: values.name,
         tags: values?.tags?.map((current) => current.tag) ?? [],
         CollectionId: collectionId,
       })
       .then((response) => {
         if (response.status === 200) {
           loadItems();
+          dispatch(
+            addItem({
+              ...response.data,
+              userName: user.username,
+              collectionName: collection.name,
+              CollectionId: +response.data.CollectionId,
+            })
+          );
           form.resetFields();
-          setIsAddItemPopupOpen(false);
+          closePopup();
         }
       });
   };
 
-  const onEditItem = (item) => {
-    // const { name, description, theme, image, id } = item;
-    // navigate(`/collection/${id}/update`, {
-    //   state: {
-    //     name,
-    //     description,
-    //     theme,
-    //     image,
-    //   },
-    // });
+  const onEditItem = (values) => {
+    axios
+      .put(`${BACKEND_URL}/items/update/${selectedRowKeys[0]}`, {
+        name: values.name,
+        tags: values?.tags?.map((current) => current.tag) ?? [],
+      })
+      .then((response) => {
+        console.log(response)
+        if (response.status === 200) {
+          loadItems();
+          form.resetFields();
+          closePopup();
+        }
+      });
   };
 
   // const onChangeTags = () => {
@@ -162,26 +192,30 @@ const CollectionPage = () => {
   // };
   // console.log(tags);
 
+  const isOpenAddItemPopup = openPopupType === ADD_ITEM_POPUP_TYPE;
 
   return (
     <PageLayout>
       <Title level={2}>{collection.name}</Title>
-      <Title level={5}>{t("theme") + ": " + collection.theme}</Title>
+      <Title level={5}>{t("theme") + ": " + t(`${collection.theme}`)}</Title>
       <p>{collection.description}</p>
-      {isUserPage && (<div className={styles.bar}>
-        <Space size="small">
-          <Button onClick={toggleOppenessAddItemPopup}>{t("addItem")}</Button>
-          <Button onClick={() => onEditItem(selectedRowKeys)}>
-            {t("updateItem")}
-          </Button>
-          <DeleteOutlined
-            className={styles.icon}
-            onClick={() => onDeleteItem(selectedRowKeys)}
-          />
-        </Space>
-      </div>)  }
+      {isUserPage && (
+        <Row className={styles.bar} gutter={8} align="middle">
+          <Col>
+            <Button onClick={openAddItemPopup}>{t("addItem")}</Button>
+          </Col>
+          <Col>
+            <Button onClick={openUpdateItemPopup}>{t("updateItem")}</Button>
+          </Col>
+          <Col>
+            <DeleteOutlined
+              className={styles.icon}
+              onClick={() => onDeleteItem(selectedRowKeys)}
+            />
+          </Col>
+        </Row>
+      )}
       <div>
-        <div className={styles.table}></div>
         <Table
           rowSelection={rowSelection}
           columns={columns}
@@ -190,10 +224,9 @@ const CollectionPage = () => {
       </div>
 
       <ModalFrame
-        isModalOpen={isAddItemPopupOpen}
-        handleCancel={toggleOppenessAddItemPopup}
-        title={t("addItem")}
-        cancelText={t("cancel")}
+        isModalOpen={!!openPopupType}
+        handleCancel={closePopup}
+        title={isOpenAddItemPopup ? t("addItem") : t("updateItem")}
       >
         <div>
           <Form
@@ -203,15 +236,12 @@ const CollectionPage = () => {
             size="large"
             name="register"
             className={styles.form}
-            onFinish={onAddItem}
+            onFinish={isOpenAddItemPopup ? onAddItem : onEditItem}
             id="category-editor-form"
           >
             <Form.Item
               name="name"
               label={t("title")}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
               rules={[
                 {
                   required: true,
@@ -261,7 +291,7 @@ const CollectionPage = () => {
             </Form.List>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                {t("addItem")}
+                {isOpenAddItemPopup ? t("addItem") : t("updateItem")}
               </Button>
             </Form.Item>
           </Form>
