@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Typography, Button, Form, Input, Upload, Select } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -19,7 +19,7 @@ const AddCollectionPage = () => {
   const [name, setName] = useState(state?.name || "");
   const [description, setDescription] = useState(state?.description || "");
   const [theme, setTheme] = useState(state?.theme || "");
-  const [image, setImage] = useState(state?.image || "");
+  const [image /*, setImage*/] = useState(state?.image || "");
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();

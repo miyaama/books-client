@@ -46,12 +46,12 @@ const HomePage = () => {
           <Col  key={collection.id} xs={{ span: 24}} sm={{ span: 12}} md={{ span: 8}} xl={{ span: 6}}>
             <Card
               className={styles.card}
-              cover={
-                <img
-                  alt="example"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                />
-              }
+              // cover={
+              //   <img
+              //     alt="example"
+              //     src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              //   />
+              // }
             >
               <Meta
                 avatar={

@@ -70,18 +70,13 @@ const CollectionPage = () => {
       dataIndex: "tags",
       filters: [
         {
-          text: t("classic"),
-          value: t("classic"),
+          text: "2022",
+          value: "2022",
         },
         {
-          text: t("novel"),
-          value: t("novel"),
+          text: "2021",
+          value: "2021",
         },
-        {
-          text: t("detective"),
-          value: t("detective"),
-        },
-
       ],
       onFilter: (value, record) => record.tags.indexOf(value) === 0,
       render: (_, { tags }) => (
@@ -175,7 +170,6 @@ const CollectionPage = () => {
         tags: values?.tags?.map((current) => current.tag) ?? [],
       })
       .then((response) => {
-        console.log(response)
         if (response.status === 200) {
           loadItems();
           form.resetFields();
@@ -190,7 +184,6 @@ const CollectionPage = () => {
   //   fields.tags?.map((item) => newTags.push(item.tag));
   //   setTags(newTags);
   // };
-  // console.log(tags);
 
   const isOpenAddItemPopup = openPopupType === ADD_ITEM_POPUP_TYPE;
 

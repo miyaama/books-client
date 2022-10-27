@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import  Icon  from "@ant-design/icons";
+import Icon from "@ant-design/icons";
 import { Avatar, Typography, Card, Comment, Tag, Row, Col } from "antd";
 import moment from "moment";
 import axios from "axios";
@@ -88,7 +88,6 @@ const BookPage = () => {
         UserId: String(user.id),
       })
       .then((response) => {
-        console.log("response: ", response);
         if (response.data.liked === true) {
           setLikes([...likes, user.id]);
           return;
@@ -110,9 +109,7 @@ const BookPage = () => {
   const HeartIcon = (props) => <Icon component={HeartSvg} {...props} />;
 
   const isItemLikedByUser = likes?.includes(user.id);
-  console.log("record: ", record);
-  console.log("likes: ", likes);
-  console.log("isItemLikedByUser: ", isItemLikedByUser);
+
   return (
     <PageLayout>
       <Card>

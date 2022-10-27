@@ -12,7 +12,7 @@ import {
   LIGHT_THEME,
   DARK_THEME,
 } from "../../shared/constants";
-import { logout, changeTheme } from "../../store/slices";
+import { logout } from "../../store/slices";
 import { ACCESS_ADMIN } from "../../shared/constants";
 
 const { Title } = Typography;

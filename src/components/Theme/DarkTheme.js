@@ -1,4 +1,4 @@
-import "antd/dist/antd.dark.css";
+import "./DarkTheme.css";
 
 const Theme = () => <></>;
 

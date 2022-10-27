@@ -1,5 +1,6 @@
-.App {
-  height: 100vh;
+.app {
+  min-height: 100vh;
+  height: 100%;
   width: 100vw;
 }
 

@@ -46,10 +46,8 @@ const SearchPage = () => {
       ),
     },
   ];
-  
 
   const loadItems = async (tag) => {
-    console.log("quest in loaditems: ", tag)
     const response = await axios.get(`${BACKEND_URL}/items/bytag/${tag}`);
     setItems(response.data);
   };
@@ -57,8 +55,6 @@ const SearchPage = () => {
   useEffect(() => {
     loadItems(quest);
   }, []);
-
-  console.log("items: ", items)
 
   return (
     <PageLayout>
