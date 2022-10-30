@@ -23,7 +23,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import styles from "./CollectionPage.module.scss";
 import PageLayout from "../../components/PageLayout";
-import { ModalFrame } from "../../components/ModalFrame.js/ModalFrame";
+import { ModalFrame } from "../../components/ModalFrame";
 import { BACKEND_URL } from "../../shared/constants";
 import { addItem } from "../../store/slices";
 
@@ -62,10 +62,6 @@ const CollectionPage = () => {
       sortDirections: ["descend"],
     },
     {
-      title: t("image"),
-      dataIndex: "image",
-    },
-    {
       title: t("tags"),
       dataIndex: "tags",
       filters: [
@@ -94,19 +90,31 @@ const CollectionPage = () => {
     },
   ];
 
+  if (collection.itemTypes) {
+    columns.push({
+      title: collection.itemTypes,
+      dataIndex: "field",
+    });
+  }
+
   const openAddItemPopup = () => setOpenPopupType(ADD_ITEM_POPUP_TYPE);
+
   const openUpdateItemPopup = () => {
-    const item = items.filter(
+    const item = items?.filter(
       (element) => element.id === selectedRowKeys[0]
     )[0];
     form.setFieldValue(
       "tags",
-      item.tags.map((tag) => ({ tag }))
+      item.tags?.map((tag) => ({ tag }))
     );
     form.setFieldValue("name", item.name);
+    form.setFieldValue("field", item.field);
     setOpenPopupType(UPDATE_ITEM_POPUP_TYPE);
   };
-  const closePopup = () => setOpenPopupType(null);
+  const closePopup = () => {
+    form.resetFields();
+    setOpenPopupType(null);
+  };
 
   const loadItems = async () => {
     const response = await axios.get(
@@ -144,6 +152,7 @@ const CollectionPage = () => {
       .post(`${BACKEND_URL}/items`, {
         name: values.name,
         tags: values?.tags?.map((current) => current.tag) ?? [],
+        field: values.field,
         CollectionId: collectionId,
       })
       .then((response) => {
@@ -157,7 +166,7 @@ const CollectionPage = () => {
               CollectionId: +response.data.CollectionId,
             })
           );
-          form.resetFields();
+
           closePopup();
         }
       });
@@ -168,22 +177,16 @@ const CollectionPage = () => {
       .put(`${BACKEND_URL}/items/update/${selectedRowKeys[0]}`, {
         name: values.name,
         tags: values?.tags?.map((current) => current.tag) ?? [],
+        field: values.field,
       })
       .then((response) => {
         if (response.status === 200) {
           loadItems();
-          form.resetFields();
+
           closePopup();
         }
       });
   };
-
-  // const onChangeTags = () => {
-  //   const fields = form.getFieldsValue();
-  //   const newTags = [];
-  //   fields.tags?.map((item) => newTags.push(item.tag));
-  //   setTags(newTags);
-  // };
 
   const isOpenAddItemPopup = openPopupType === ADD_ITEM_POPUP_TYPE;
 
@@ -212,7 +215,11 @@ const CollectionPage = () => {
         <Table
           rowSelection={rowSelection}
           columns={columns}
-          dataSource={items.map((item) => ({ ...item, key: item.id }))}
+          dataSource={items.map((item) => ({
+            ...item,
+            key: item.id,
+            itemTypes: collection.itemTypes,
+          }))}
         />
       </div>
 
@@ -244,6 +251,12 @@ const CollectionPage = () => {
             >
               <Input />
             </Form.Item>
+            {collection.itemTypes ? (
+              <Form.Item name="field" label={collection.itemTypes}>
+                <Input />
+              </Form.Item>
+            ) : null}
+
             <Form.List name="tags">
               {(fields, { add, remove }) => (
                 <>
@@ -252,6 +265,7 @@ const CollectionPage = () => {
                       <Form.Item
                         {...restField}
                         name={[name, "tag"]}
+                        label={t("tag")}
                         rules={[
                           {
                             required: true,

@@ -32,7 +32,7 @@ const AdminPage = () => {
     },
     {
       title: t("name"),
-      dataIndex: "name",
+      dataIndex: "username",
     },
     {
       title: "Email",
@@ -230,7 +230,12 @@ const AdminPage = () => {
           <Table
             rowSelection={rowSelection}
             columns={columns}
-            dataSource={users.map((user) => ({ ...user, key: user.id }))}
+            dataSource={users.map((user) => ({
+              ...user,
+              key: user.id,
+              status: t(`${user.status}`),
+              access: t(user.access),
+            }))}
           />
         </div>
       </div>

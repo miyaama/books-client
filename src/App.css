@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 .app {
   min-height: 100vh;
   height: 100%;
@@ -15,3 +19,13 @@ h3.ant-typography {
 .tag-cloud-tag {
   cursor: pointer !important;
 }
+
+.ant-menu-item-selected {
+  background-color: transparent !important;
+}
+
+span.anticon-down {
+  color: #a6adb4 !important;
+}
+
+

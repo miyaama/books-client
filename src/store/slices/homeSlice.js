@@ -1,7 +1,4 @@
-import {
-  createSlice,
-  createAsyncThunk,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import { BACKEND_URL } from "../../shared/constants";
@@ -16,9 +13,6 @@ export const homeSlice = createSlice({
   name: "home",
   initialState,
   reducers: {
-    // addCollections: (state, action) => {
-    //   state.collections = action.payload;
-    // },
     addItem: (state, action) => {
       state.items = [action.payload, ...state.items.slice(0, 5)];
     },

@@ -39,13 +39,13 @@ const UserPage = () => {
   };
 
   const onEditCollection = (collection) => {
-    const { name, description, theme, image, UserId } = collection;
+    const { name, description, theme, itemTypes, UserId } = collection;
     navigate(`/collection/${collection.id}/update`, {
       state: {
         name,
         description,
         theme,
-        image,
+        itemTypes,
         UserId,
       },
     });
@@ -67,15 +67,15 @@ const UserPage = () => {
       </Row>
       <Row gutter={[16, 24]}>
         {collections.map((collection) => (
-          <Col key={collection.id} xs={{ span: 24}} sm={{ span: 12}} md={{ span: 8}} xl={{ span: 6}}>
+          <Col
+            key={collection.id}
+            xs={{ span: 24 }}
+            sm={{ span: 12 }}
+            md={{ span: 8 }}
+            xl={{ span: 6 }}
+          >
             <Card
               className={styles.card}
-              // cover={
-              //   <img
-              //     alt="example"
-              //     src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-              //   />
-              // }
               actions={
                 isUserPage
                   ? [

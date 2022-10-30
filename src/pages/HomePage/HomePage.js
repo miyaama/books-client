@@ -14,8 +14,8 @@ const HomePage = () => {
   const { t } = useTranslation();
   const { collections, items, tags } = useSelector((state) => state.home);
   const navigate = useNavigate();
-  const data = tags.map((tag) => {
-    return { ...tag, value: tag.name, count: 30 };
+  const tagsData = tags.map((tag) => {
+    return { ...tag, value: tag.name, count: Math.random() * 40 + 15 };
   });
 
   const columns = [
@@ -43,16 +43,14 @@ const HomePage = () => {
       <Title level={3}>{t("largestCollections")}</Title>
       <Row gutter={[16, 24]}>
         {collections?.map((collection) => (
-          <Col  key={collection.id} xs={{ span: 24}} sm={{ span: 12}} md={{ span: 8}} xl={{ span: 6}}>
-            <Card
-              className={styles.card}
-              // cover={
-              //   <img
-              //     alt="example"
-              //     src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-              //   />
-              // }
-            >
+          <Col
+            key={collection.id}
+            xs={{ span: 24 }}
+            sm={{ span: 12 }}
+            md={{ span: 8 }}
+            xl={{ span: 6 }}
+          >
+            <Card className={styles.card}>
               <Meta
                 avatar={
                   <Avatar
@@ -78,10 +76,10 @@ const HomePage = () => {
       />
       <Title level={3}>{t("cloudTags")}</Title>
       <TagCloud
-        minSize={12}
+        minSize={15}
         className={styles.cloud}
-        maxSize={55}
-        tags={data}
+        maxSize={40}
+        tags={tagsData}
         onClick={(tag) => navigate(`/search/${tag.name}`)}
       />
     </PageLayout>

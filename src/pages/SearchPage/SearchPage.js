@@ -26,10 +26,6 @@ const SearchPage = () => {
       ),
     },
     {
-      title: t("image"),
-      dataIndex: "image",
-    },
-    {
       title: t("tags"),
       dataIndex: "tags",
       render: (_, { tags }) => (

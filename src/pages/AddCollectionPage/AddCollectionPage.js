@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Typography, Button, Form, Input, Upload, Select } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { Typography, Button, Form, Input, Select } from "antd";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
-import styles from "./AddCollectionPage.module.scss";
 import PageLayout from "../../components/PageLayout";
 import { BACKEND_URL } from "../../shared/constants";
+import { fetchCollections } from "../../store/slices";
+import styles from "./AddCollectionPage.module.scss";
 
 const { Title } = Typography;
 
@@ -19,15 +19,20 @@ const AddCollectionPage = () => {
   const [name, setName] = useState(state?.name || "");
   const [description, setDescription] = useState(state?.description || "");
   const [theme, setTheme] = useState(state?.theme || "");
-  const [image /*, setImage*/] = useState(state?.image || "");
+  const [itemTypes, setItemTypes] = useState(state?.itemTypes || "");
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const user = useSelector((state) => state.login);
+  const largeCollections = useSelector((state) => state.home.collections);
+  const dispatch = useDispatch();
 
   const currentUserId = state ? state.UserId : id;
   const isUserPage = +currentUserId === user.id || user.access === "admin";
+  const isCollectionTheLargest = largeCollections.filter(
+    (collection) => collection.id == id
+  );
 
   useEffect(() => {
     if (!isUserPage) {
@@ -44,8 +49,8 @@ const AddCollectionPage = () => {
       .post(`${BACKEND_URL}/collections`, {
         name,
         description,
-        image,
         theme,
+        itemTypes,
         UserId: id,
       })
       .then((response) => {
@@ -61,11 +66,12 @@ const AddCollectionPage = () => {
       .put(`${BACKEND_URL}/collections/update/${id}`, {
         name,
         description,
-        image,
         theme,
+        itemTypes,
       })
       .then((response) => {
         if (response.status === 200) {
+          isCollectionTheLargest && dispatch(fetchCollections());
           navigate(`/collection/${id}`);
         }
       });
@@ -86,7 +92,7 @@ const AddCollectionPage = () => {
         name="addCollection"
         onFinish={onFinish}
         className={styles.form}
-        initialValues={{ name, description, theme }}
+        initialValues={{ name, description, theme, itemTypes }}
       >
         <Form.Item
           name="name"
@@ -112,7 +118,7 @@ const AddCollectionPage = () => {
         >
           <Input.TextArea />
         </Form.Item>
-        <Form.Item label={t("theme")}>
+        <Form.Item name="theme" label={t("theme")}>
           <Select
             onChange={(value) => {
               setTheme(value);
@@ -131,21 +137,16 @@ const AddCollectionPage = () => {
           </Select>
         </Form.Item>
         <Form.Item
-          name="image"
-          label={t("cover")}
-          valuePropName="fileList"
-          // getValueFromEvent={normFile}
+          name="itemTypes"
+          label={t("field")}
+          onChange={(e) => {
+            setItemTypes(e.target.value);
+          }}
         >
-          <Upload name="logo" action="/upload.do" listType="picture">
-            <Button icon={<UploadOutlined />}>{t("upload")}</Button>
-          </Upload>
+          <Input value={itemTypes} />
         </Form.Item>
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.authorizationButton}
-          >
+          <Button type="primary" htmlType="submit" className={styles}>
             {state ? t("update") : t("create")}
           </Button>
         </Form.Item>
