@@ -1,26 +1,22 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Avatar, Card, Typography, Row, Col, Button } from "antd";
+import { Avatar, Card, Row, Col } from "antd";
 import { useSelector } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import styles from "./UserPage.module.scss";
 import PageLayout from "../../components/PageLayout";
-import { BACKEND_URL } from "../../shared/constants";
+import { BACKEND_URL, AVATAR_URL } from "../../shared/constants";
+import UserBar from "./UserBar/";
 
 const { Meta } = Card;
-const { Title } = Typography;
 
 const UserPage = () => {
   const [collections, setCollections] = useState([]);
-  const { t } = useTranslation();
   const { id } = useParams();
   const user = useSelector((state) => state.login);
   const navigate = useNavigate();
-
-  const isUserPage = +id === user.id || user.access === "admin";
 
   const loadCollections = async () => {
     const response = await axios.get(`${BACKEND_URL}/collections/byuser/${id}`);
@@ -51,20 +47,11 @@ const UserPage = () => {
     });
   };
 
+  const isUserPage = +id === user.id || user.access === "admin";
+
   return (
     <PageLayout>
-      <Row justify="space-between" align="middle">
-        <Title level={2}>
-          {isUserPage
-            ? t("myCollections")
-            : t("collections") + (user.username || "")}
-        </Title>
-        {isUserPage && (
-          <Link to={`/user/${user?.id}/create`}>
-            <Button type="primary">{t("add")}</Button>{" "}
-          </Link>
-        )}
-      </Row>
+      <UserBar id={id} />
       <Row gutter={[16, 24]}>
         {collections.map((collection) => (
           <Col
@@ -75,7 +62,6 @@ const UserPage = () => {
             xl={{ span: 6 }}
           >
             <Card
-              className={styles.card}
               actions={
                 isUserPage
                   ? [
@@ -92,11 +78,7 @@ const UserPage = () => {
               }
             >
               <Meta
-                avatar={
-                  <Avatar
-                    src={`https://joeschmoe.io/api/v1/${collection.UserId}`}
-                  />
-                }
+                avatar={<Avatar src={`${AVATAR_URL}/${collection.UserId}`} />}
                 title={
                   <Link to={`/collection/${collection.id}`} state={{ id: id }}>
                     {collection.name}

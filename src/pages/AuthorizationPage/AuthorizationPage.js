@@ -5,7 +5,7 @@ import { Button, Form, Input, Typography } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
-import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys";
+import { HOME, IS_LOGIN_LOCAL_STORAGE, LOGIN } from "../../shared/constants";
 import styles from "./AuthorizationPage.module.scss";
 import PageLayout from "../../components/PageLayout";
 import { login } from "../../store/slices";
@@ -14,7 +14,6 @@ import { ACCESS_USER, BACKEND_URL } from "../../shared/constants";
 const { Title } = Typography;
 
 const AuthorizationPage = () => {
-  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
@@ -27,8 +26,8 @@ const AuthorizationPage = () => {
   const register = () => {
     axios
       .post(`${BACKEND_URL}/users/register`, {
-        email: email,
-        password: password,
+        email,
+        password,
         username: userName,
       })
       .then((response) => {
@@ -59,7 +58,7 @@ const AuthorizationPage = () => {
               access: ACCESS_USER,
             })
           );
-          navigate("/");
+          navigate(HOME);
         }
       });
   };
@@ -138,7 +137,7 @@ const AuthorizationPage = () => {
             </Button>
           </Form.Item>
           <Form.Item>
-            <Link to="/login">{t("alreadyHaveAccount")}</Link>
+            <Link to={LOGIN}>{t("alreadyHaveAccount")}</Link>
           </Form.Item>
         </Form>
       </div>

@@ -6,9 +6,8 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import PageLayout from "../../components/PageLayout";
-import { BACKEND_URL } from "../../shared/constants";
+import { BACKEND_URL, HOME } from "../../shared/constants";
 import { fetchCollections } from "../../store/slices";
-import styles from "./AddCollectionPage.module.scss";
 
 const { Title } = Typography;
 
@@ -36,7 +35,7 @@ const AddCollectionPage = () => {
 
   useEffect(() => {
     if (!isUserPage) {
-      navigate("/");
+      navigate(HOME);
     }
   }, [isUserPage, navigate]);
 
@@ -91,7 +90,6 @@ const AddCollectionPage = () => {
         size="large"
         name="addCollection"
         onFinish={onFinish}
-        className={styles.form}
         initialValues={{ name, description, theme, itemTypes }}
       >
         <Form.Item
@@ -146,7 +144,7 @@ const AddCollectionPage = () => {
           <Input value={itemTypes} />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className={styles}>
+          <Button type="primary" htmlType="submit">
             {state ? t("update") : t("create")}
           </Button>
         </Form.Item>

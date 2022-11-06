@@ -1,0 +1,10 @@
+export const HOME = "/";
+export const LOGIN = "/login";
+export const AUTHORIZATION = "/authorization";
+export const USER = "/user/:id";
+export const COLLECTION = "/collection/:collectionId";
+export const BOOK = "/book/:bookId";
+export const ADMIN = "/admin";
+export const CREATE_COLLECTION = "/user/:id/create";
+export const UPDATE_COLLECTION = "/collection/:id/update";
+export const SEARCH = "/search/:quest";

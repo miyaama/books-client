@@ -9,7 +9,11 @@ import { useDispatch } from "react-redux";
 import { login } from "../../store/slices";
 import styles from "./LoginPage.module.scss";
 import PageLayout from "../../components/PageLayout";
-import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys";
+import {
+  IS_LOGIN_LOCAL_STORAGE,
+  AUTHORIZATION,
+  HOME,
+} from "../../shared/constants";
 import { BACKEND_URL } from "../../shared/constants";
 
 const { Title, Text } = Typography;
@@ -50,7 +54,6 @@ const LoginPage = () => {
               isLogin: true,
             })
           );
-
           dispatch(
             login({
               id: response.data.id,
@@ -60,8 +63,7 @@ const LoginPage = () => {
               isLogin: true,
             })
           );
-
-          navigate("/");
+          navigate(HOME);
         }
       });
   };
@@ -125,7 +127,7 @@ const LoginPage = () => {
             </Button>
           </Form.Item>
           <Form.Item>
-            <Link to="/authorization">{t("registerNow")}</Link>
+            <Link to={AUTHORIZATION}>{t("registerNow")}</Link>
           </Form.Item>
         </Form>
       </div>

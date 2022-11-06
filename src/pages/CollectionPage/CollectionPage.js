@@ -1,31 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Button,
-  Table,
-  Space,
-  Typography,
-  Form,
-  Input,
-  Tag,
-  AutoComplete,
-  Row,
-  Col,
-} from "antd";
-import {
-  DeleteOutlined,
-  MinusCircleOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { Button, Table, Typography, Form, Input, Tag, Row, Col } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useParams, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import styles from "./CollectionPage.module.scss";
 import PageLayout from "../../components/PageLayout";
-import { ModalFrame } from "../../components/ModalFrame";
+import { ModalFrame } from "./ModalFrame";
 import { BACKEND_URL } from "../../shared/constants";
 import { addItem } from "../../store/slices";
+import TagsList from "./TagsList/TagsList";
 
 const ADD_ITEM_POPUP_TYPE = "ADD_ITEM_POPUP_TYPE";
 const UPDATE_ITEM_POPUP_TYPE = "UPDATE_ITEM_POPUP_TYPE";
@@ -40,10 +26,6 @@ const CollectionPage = () => {
   const { collectionId } = useParams();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.login);
-
-  const tags = useSelector(({ home }) =>
-    home.tags?.map((tag) => ({ label: tag.name, value: tag.name }))
-  );
 
   const isUserPage = +collection.UserId === user.id || user.access === "admin";
 
@@ -166,7 +148,6 @@ const CollectionPage = () => {
               CollectionId: +response.data.CollectionId,
             })
           );
-
           closePopup();
         }
       });
@@ -222,7 +203,6 @@ const CollectionPage = () => {
           }))}
         />
       </div>
-
       <ModalFrame
         isModalOpen={!!openPopupType}
         handleCancel={closePopup}
@@ -256,46 +236,7 @@ const CollectionPage = () => {
                 <Input />
               </Form.Item>
             ) : null}
-
-            <Form.List name="tags">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields.map(({ key, name, ...restField }) => (
-                    <Space key={key} className={styles.space} align="baseline">
-                      <Form.Item
-                        {...restField}
-                        name={[name, "tag"]}
-                        label={t("tag")}
-                        rules={[
-                          {
-                            required: true,
-                            message: t("InputTag"),
-                          },
-                        ]}
-                      >
-                        <AutoComplete
-                          name={[name, "tag"]}
-                          filterOption
-                          options={tags}
-                          className={styles.autoComplete}
-                        />
-                      </Form.Item>
-                      <MinusCircleOutlined onClick={() => remove(name)} />
-                    </Space>
-                  ))}
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      block
-                      icon={<PlusOutlined />}
-                    >
-                      {t("AddTags")}
-                    </Button>
-                  </Form.Item>
-                </>
-              )}
-            </Form.List>
+            <TagsList />
             <Form.Item>
               <Button type="primary" htmlType="submit">
                 {isOpenAddItemPopup ? t("addItem") : t("updateItem")}

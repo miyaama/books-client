@@ -7,23 +7,34 @@ import HomePage from "../../pages/HomePage";
 import CollectionPage from "../../pages/CollectionPage";
 import AdminPage from "../../pages/AdminPage";
 import AddCollectionPage from "../../pages/AddCollectionPage";
-import BookPage from "../../pages/BookPage"
+import BookPage from "../../pages/BookPage";
 import SearchPage from "../../pages/SearchPage";
-
+import {
+  HOME,
+  LOGIN,
+  AUTHORIZATION,
+  USER,
+  COLLECTION,
+  BOOK,
+  ADMIN,
+  CREATE_COLLECTION,
+  UPDATE_COLLECTION,
+  SEARCH,
+} from "../../shared/constants/";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/authorization" element={<AuthorizationPage />} />
-      <Route path="/user/:id" element={<UserPage />} />
-      <Route path="/collection/:collectionId" element={<CollectionPage />} />
-      <Route path="/book/:bookId" element={<BookPage />} />
-      <Route path="/admin" element={<AdminPage />} />
-      <Route path="/user/:id/create" element={<AddCollectionPage />} />
-      <Route path="/collection/:id/update" element={<AddCollectionPage />} />
-      <Route path="/search/:quest" element={<SearchPage />} />
+      <Route path={HOME} element={<HomePage />} />
+      <Route path={LOGIN} element={<LoginPage />} />
+      <Route path={AUTHORIZATION} element={<AuthorizationPage />} />
+      <Route path={USER} element={<UserPage />} />
+      <Route path={COLLECTION} element={<CollectionPage />} />
+      <Route path={BOOK} element={<BookPage />} />
+      <Route path={ADMIN} element={<AdminPage />} />
+      <Route path={CREATE_COLLECTION} element={<AddCollectionPage />} />
+      <Route path={UPDATE_COLLECTION} element={<AddCollectionPage />} />
+      <Route path={SEARCH} element={<SearchPage />} />
     </Routes>
   );
 }

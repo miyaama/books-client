@@ -10,7 +10,7 @@ import {
   IS_LOGIN_LOCAL_STORAGE,
   THEME,
   LIGHT_THEME,
-  DARK_THEME,
+  DARK_THEME, LOGIN, ADMIN
 } from "../../shared/constants";
 import { logout } from "../../store/slices";
 import { ACCESS_ADMIN } from "../../shared/constants";
@@ -41,7 +41,7 @@ const PageHeader = () => {
   };
 
   const onLogin = () => {
-    navigate("/login");
+    navigate(LOGIN);
   };
 
   const onLogout = () => {
@@ -105,7 +105,7 @@ const PageHeader = () => {
     if (access === ACCESS_ADMIN) {
       items.splice(2, 0, {
         label: (
-          <Link to="/admin" key="item2">
+          <Link to={ADMIN} key="item2">
             {translation("adminPanel")}
           </Link>
         ),

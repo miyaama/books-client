@@ -8,9 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import PageLayout from "../../components/PageLayout";
 import styles from "./AdminPage.module.scss";
-import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants/localStorageKeys";
+import { IS_LOGIN_LOCAL_STORAGE } from "../../shared/constants";
 import { actionAddAdmin, actionRemoveAdmin, logout } from "../../store/slices";
-import { ACCESS_ADMIN, ACCESS_USER, BACKEND_URL } from "../../shared/constants";
+import { ACCESS_ADMIN, ACCESS_USER, BACKEND_URL, HOME } from "../../shared/constants";
 
 const AdminPage = () => {
   const [users, setUsers] = useState([]);
@@ -55,7 +55,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     if (!admin) {
-      navigate("/");
+      navigate(HOME);
     }
     loadUsers();
   }, [admin, navigate]);
@@ -127,7 +127,7 @@ const AdminPage = () => {
     id.forEach((userId) => {
       if (userId === currentUserId) {
         dispatch(logout());
-        navigate("/");
+        navigate(HOME);
       }
     });
   };
