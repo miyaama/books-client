@@ -13,19 +13,24 @@ const { Title } = Typography;
 
 const AddCollectionPage = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const { state } = location;
 
   const [name, setName] = useState(state?.name || "");
   const [description, setDescription] = useState(state?.description || "");
   const [theme, setTheme] = useState(state?.theme || "");
   const [itemTypes, setItemTypes] = useState(state?.itemTypes || "");
+
   const { t } = useTranslation();
+
   const { id } = useParams();
+
   const navigate = useNavigate();
+
   const [form] = Form.useForm();
+
   const user = useSelector((state) => state.login);
   const largeCollections = useSelector((state) => state.home.collections);
-  const dispatch = useDispatch();
 
   const currentUserId = state ? state.UserId : id;
   const isUserPage = +currentUserId === user.id || user.access === "admin";
