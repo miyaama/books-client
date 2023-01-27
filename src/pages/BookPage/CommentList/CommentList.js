@@ -1,4 +1,5 @@
-import { List, Comment } from "antd";
+import { List } from "antd";
+import { Comment } from '@ant-design/compatible';
 
 const CommentList = ({ comments , translation}) => (
   <List

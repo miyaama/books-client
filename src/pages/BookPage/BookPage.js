@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Avatar, Card, Comment } from "antd";
+import { Avatar, Card } from "antd";
+import { Comment } from '@ant-design/compatible';
 import moment from "moment";
 import axios from "axios";
 

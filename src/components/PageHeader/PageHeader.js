@@ -26,19 +26,19 @@ const PageHeader = () => {
 
   const user = useSelector((state) => state.login);
 
-  const theme = localStorage.getItem(THEME) || LIGHT_THEME;
+  // const theme = localStorage.getItem(THEME) || LIGHT_THEME;
 
-  const isLightTheme = theme === LIGHT_THEME;
+  // const isLightTheme = theme === LIGHT_THEME;
 
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
     localStorage.setItem(LANGUAGE, language);
   };
 
-  const changeTheme = (lightTheme) => {
-    localStorage.setItem(THEME, lightTheme ? LIGHT_THEME : DARK_THEME);
-    window.location.reload();
-  };
+  // const changeTheme = (lightTheme) => {
+  //   localStorage.setItem(THEME, lightTheme ? LIGHT_THEME : DARK_THEME);
+  //   window.location.reload();
+  // };
 
   const onLogin = () => {
     navigate(LOGIN);
@@ -61,17 +61,17 @@ const PageHeader = () => {
         ),
         key: "home",
       },
-      {
-        label: (
-          <Switch
-            checkedChildren={<span> &#9788; </span>}
-            unCheckedChildren={<span> &#9789; </span>}
-            defaultChecked={isLightTheme}
-            onChange={(value) => changeTheme(value)}
-          />
-        ),
-        key: "theme",
-      },
+      // {
+      //   label: (
+      //     <Switch
+      //       checkedChildren={<span> &#9788; </span>}
+      //       unCheckedChildren={<span> &#9789; </span>}
+      //       defaultChecked={isLightTheme}
+      //       onChange={(value) => changeTheme(value)}
+      //     />
+      //   ),
+      //   key: "theme",
+      // },
       {
         label: (
           <Select

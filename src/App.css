@@ -28,4 +28,7 @@ span.anticon-down {
   color: #a6adb4 !important;
 }
 
-
+:where(.css-dev-only-do-not-override-1n7nwfa).ant-select-single
+  .ant-select-selector {
+  color: #a6adb4;
+}
