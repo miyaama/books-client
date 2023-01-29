@@ -12,6 +12,7 @@ import { ModalFrame } from "./ModalFrame";
 import { BACKEND_URL } from "../../shared/constants";
 import { addItem } from "../../store/slices";
 import TagsList from "./TagsList/TagsList";
+import BackButton from "../../components/BackButton";
 
 const ADD_ITEM_POPUP_TYPE = "ADD_ITEM_POPUP_TYPE";
 const UPDATE_ITEM_POPUP_TYPE = "UPDATE_ITEM_POPUP_TYPE";
@@ -173,6 +174,7 @@ const CollectionPage = () => {
 
   return (
     <PageLayout>
+      <BackButton />
       <Title level={2}>{collection.name}</Title>
       <Title level={5}>{t("theme") + ": " + t(`${collection.theme}`)}</Title>
       <p>{collection.description}</p>
@@ -245,6 +247,7 @@ const CollectionPage = () => {
           </Form>
         </div>
       </ModalFrame>
+    
     </PageLayout>
   );
 };

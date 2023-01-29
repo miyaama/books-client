@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import PageLayout from "../../components/PageLayout";
 import styles from "./SearchPage.module.scss";
 import { BACKEND_URL } from "../../shared/constants";
+import BackButton from "../../components/BackButton";
 
 const SearchPage = () => {
   const { quest } = useParams();
@@ -55,6 +56,7 @@ const SearchPage = () => {
   return (
     <PageLayout>
       <div>
+      <BackButton/>
         <Title level={2} className={styles.title}>
           {t("searchResults")}
         </Title>

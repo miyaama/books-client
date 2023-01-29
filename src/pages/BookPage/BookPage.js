@@ -2,29 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import {  Card } from "antd";
-import { Comment } from '@ant-design/compatible';
+import { Card } from "antd";
+import { Comment } from "@ant-design/compatible";
 import moment from "moment";
 import axios from "axios";
-import Avvvatars from 'avvvatars-react';
+import Avvvatars from "avvvatars-react";
 
 import PageLayout from "../../components/PageLayout";
 import Editor from "./Editor";
 import CommentList from "./CommentList";
 import { BACKEND_URL } from "../../shared/constants";
 
-import BackButton from "./BackButton";
+import BackButton from "../../components/BackButton";
 import BookHeader from "./BookHeader/BookHeader";
 
 const BookPage = () => {
   const location = useLocation();
 
   const { record } = location.state;
-  console.log("record", record)
 
   const [comments, setComments] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [value, setValue] = useState("");
+  const [book, setBook] = useState({});
 
   const user = useSelector((state) => state.login);
   const isLogin = user.isLogin;
@@ -39,7 +39,7 @@ const BookPage = () => {
     response.data.forEach((comment) => {
       comments.push({
         author: comment.username,
-        avatar:  <Avvvatars style="shape" value={comment.useri} /> ,
+        avatar: <Avvvatars style="shape" value={comment.useri} />,
         content: <p>{comment.comment}</p>,
         datetime: moment(comment.createdAt).fromNow(),
       });
@@ -47,7 +47,13 @@ const BookPage = () => {
     setComments(comments);
   };
 
+  const loadBookInfo = async () => {
+    const response = await axios.get(`${BACKEND_URL}/items/byBookId/${bookId}`);
+    setBook({ ...response.data[0], itemTypes: record.itemTypes });
+  };
+
   useEffect(() => {
+    loadBookInfo();
     loadComments();
   }, []);
 
@@ -70,7 +76,7 @@ const BookPage = () => {
             ...comments,
             {
               author: user.username,
-              avatar:  <Avvvatars style="shape" value={user.id} /> ,
+              avatar: <Avvvatars style="shape" value={user.id} />,
               content: <p>{value}</p>,
               datetime: moment(new Date()).fromNow(),
             },
@@ -87,13 +93,13 @@ const BookPage = () => {
     <PageLayout>
       <BackButton />
       <Card>
-        <BookHeader record={record} bookId={bookId} />
+        <BookHeader record={book} bookId={bookId} />
         {comments.length > 0 && (
           <CommentList comments={comments} translation={t} />
         )}
         {isLogin && (
           <Comment
-            avatar={ <Avvvatars style="shape" value={user.id} /> }
+            avatar={<Avvvatars style="shape" value={user.id} />}
             content={
               <Editor
                 onChange={handleChange}

@@ -1,6 +1,8 @@
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
+import styles from "./BackButton.module.scss";
+
 const BackButton = () => {
   const navigate = useNavigate();
 
@@ -8,9 +10,11 @@ const BackButton = () => {
     navigate(-1);
   };
   return (
-    <Button type="button" onClick={goBack}>
-      Назад
-    </Button>
+    <div className={styles.container}>
+      <Button  onClick={goBack}>
+        Назад
+      </Button>
+    </div>
   );
 };
 

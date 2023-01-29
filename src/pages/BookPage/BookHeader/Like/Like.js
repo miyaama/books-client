@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col } from "antd";
 import clsx from "clsx";
 import { useSelector } from "react-redux";
@@ -9,9 +9,7 @@ import HeartIcon from "../../../../components/Icon/HeartIcon";
 import { BACKEND_URL } from "../../../../shared/constants";
 
 const Like = ({ record, bookId }) => {
-  const [likes, setLikes] = useState(() => {
-    return record.Likes?.map((like) => like.UserId);
-  });
+  const [likes, setLikes] = useState([]);
   const user = useSelector((state) => state.login);
   const isItemLikedByUser = likes?.includes(user.id);
   const isLogin = user.isLogin;
@@ -28,11 +26,16 @@ const Like = ({ record, bookId }) => {
             setLikes([...likes, user.id]);
             return;
           }
-          const newLikes = likes.filter((id) => id !== user.id);
+          const newLikes = likes?.filter((id) => id !== user.id);
           setLikes(newLikes);
         });
     }
   };
+
+  useEffect(() => {
+    setLikes(record?.Likes?.map((like) => like.UserId));
+  }, [record]);
+
   return (
     <Col span={4}>
       <Row justify="end" gutter={[8, 8]}>

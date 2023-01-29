@@ -36,7 +36,11 @@ span.anticon-down {
   color: #a6adb4;
 }
 
-:where(.css-dev-only-do-not-override-1n7nwfa).ant-form-vertical .ant-form-item-label>label {
+:where(.css-dev-only-do-not-override-1n7nwfa) .ant-form-item-label>label {
+  height: auto !important;
+}
+
+:where(.css-dev-only-do-not-override-1f0gajl).ant-form-large .ant-form-item .ant-form-item-label>label {
   height: auto !important;
 }
 

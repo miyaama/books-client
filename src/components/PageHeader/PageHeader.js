@@ -32,11 +32,6 @@ const PageHeader = () => {
     localStorage.setItem(LANGUAGE, language);
   };
 
-  // const changeTheme = (lightTheme) => {
-  //   localStorage.setItem(THEME, lightTheme ? LIGHT_THEME : DARK_THEME);
-  //   window.location.reload();
-  // };
-
   const onLogin = () => {
     navigate(LOGIN);
   };
@@ -63,7 +58,7 @@ const PageHeader = () => {
           <Switch
             checkedChildren={<span> &#9788; </span>}
             unCheckedChildren={<span> &#9789; </span>}
-            defaultChecked={!isDarkMode}
+            defaultChecked={isDarkMode}
             onChange={() => dispatch(changeTheme())}
           />
         ),

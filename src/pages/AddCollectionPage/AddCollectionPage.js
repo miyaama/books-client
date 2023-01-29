@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Typography, Button, Form, Input, Select } from "antd";
+import { Typography, Button, Form, Input, Select, Card } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -8,6 +8,9 @@ import axios from "axios";
 import PageLayout from "../../components/PageLayout";
 import { BACKEND_URL, HOME } from "../../shared/constants";
 import { fetchCollections } from "../../store/slices";
+import BackButton from "../../components/BackButton";
+import styles from "./AddCollectionPage.module.scss";
+
 
 const { Title } = Typography;
 
@@ -85,75 +88,79 @@ const AddCollectionPage = () => {
 
   return (
     <PageLayout>
-      <Title level={2}>
-        {state ? t("editCollection") : t("createСollection")}
-      </Title>
-      <Form
-        form={form}
-        layout="vertical"
-        labelAlign="right"
-        size="large"
-        name="addCollection"
-        onFinish={onFinish}
-        initialValues={{ name, description, theme, itemTypes }}
-      >
-        <Form.Item
-          name="name"
-          label={t("title")}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          rules={[
-            {
-              required: true,
-              message: t("errorTitle"),
-            },
-          ]}
+      <BackButton />
+      <Card className={styles.container}>
+        <Title level={2}>
+          {state ? t("editCollection") : t("createСollection")}
+        </Title>
+        <Form
+          form={form}
+          layout="vertical"
+          labelAlign="right"
+          name="addCollection"
+          onFinish={onFinish}
+          initialValues={{ name, description, theme, itemTypes }}
         >
-          <Input value={name} />
-        </Form.Item>
-        <Form.Item
-          name="description"
-          label={t("description")}
-          onChange={(e) => {
-            setDescription(e.target.value);
-          }}
-        >
-          <Input.TextArea />
-        </Form.Item>
-        <Form.Item name="theme" label={t("theme")}>
-          <Select
-            onChange={(value) => {
-              setTheme(value);
+          <Form.Item
+            name="name"
+            label={t("title")}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            rules={[
+              {
+                required: true,
+                message: t("errorTitle"),
+              },
+            ]}
+          >
+            <Input value={name} />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label={t("description")}
+            onChange={(e) => {
+              setDescription(e.target.value);
             }}
           >
-            <Select.Option value="history">{t("history")}</Select.Option>
-            <Select.Option value="nonfiction">{t("nonfiction")}</Select.Option>
-            <Select.Option value="fiction">{t("fiction")}</Select.Option>
-            <Select.Option value="20thCentury">
-              {t("20thCentury")}
-            </Select.Option>
-            <Select.Option value="19thCentury">
-              {t("19thCentury")}
-            </Select.Option>
-            <Select.Option value="modern">{t("modern")}</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="itemTypes"
-          label={t("field")}
-          onChange={(e) => {
-            setItemTypes(e.target.value);
-          }}
-        >
-          <Input value={itemTypes} />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {state ? t("update") : t("create")}
-          </Button>
-        </Form.Item>
-      </Form>
+            <Input.TextArea />
+          </Form.Item>
+          <Form.Item name="theme" label={t("theme")}>
+            <Select
+              onChange={(value) => {
+                setTheme(value);
+              }}
+            >
+              <Select.Option value="history">{t("history")}</Select.Option>
+              <Select.Option value="nonfiction">
+                {t("nonfiction")}
+              </Select.Option>
+              <Select.Option value="fiction">{t("fiction")}</Select.Option>
+              <Select.Option value="20thCentury">
+                {t("20thCentury")}
+              </Select.Option>
+              <Select.Option value="19thCentury">
+                {t("19thCentury")}
+              </Select.Option>
+              <Select.Option value="modern">{t("modern")}</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="itemTypes"
+            label={t("field")}
+            onChange={(e) => {
+              setItemTypes(e.target.value);
+            }}
+          >
+            <Input value={itemTypes} />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              {state ? t("update") : t("create")}
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
     </PageLayout>
   );
 };

@@ -9,7 +9,7 @@ const HomeTable = () => {
   const { items } = useSelector((state) => state.home);
 
   const { Title } = Typography;
-
+  
   const columns = [
     {
       title: t("name"),
