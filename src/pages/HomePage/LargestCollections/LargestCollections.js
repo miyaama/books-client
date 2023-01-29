@@ -1,9 +1,9 @@
-import { Avatar, Card, Typography, Row, Col } from "antd";
+import {  Card, Typography, Row, Col } from "antd";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Avvvatars from 'avvvatars-react';
 
-import { AVATAR_URL } from "../../../shared/constants";
 import styles from "./LargestCollections.module.scss";
 
 const LargestCollections = () => {
@@ -27,7 +27,7 @@ const LargestCollections = () => {
           >
             <Card className={styles.card}>
               <Meta
-                avatar={<Avatar src={`${AVATAR_URL}/${collection.UserId}`} />}
+                avatar={<Avvvatars style="shape" value={collection.UserId} />}
                 title={
                   <Link to={`/collection/${collection.id}`}>
                     {collection.name}

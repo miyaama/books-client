@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Avatar, Card, Row, Col } from "antd";
+import {  Card, Row, Col } from "antd";
 import { useSelector } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Avvvatars from 'avvvatars-react';
 
 import styles from "./UserPage.module.scss";
 import PageLayout from "../../components/PageLayout";
-import { BACKEND_URL, AVATAR_URL } from "../../shared/constants";
+import { BACKEND_URL } from "../../shared/constants";
 import UserBar from "./UserBar/";
 
 const { Meta } = Card;
@@ -78,7 +79,8 @@ const UserPage = () => {
               }
             >
               <Meta
-                avatar={<Avatar src={`${AVATAR_URL}/${collection.UserId}`} />}
+                avatar={<Avvvatars style="shape" value={collection.UserId} />}
+                 
                 title={
                   <Link to={`/collection/${collection.id}`} state={{ id: id }}>
                     {collection.name}

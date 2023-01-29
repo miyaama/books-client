@@ -8,11 +8,10 @@ import styles from "./PageHeader.module.scss";
 import {
   LANGUAGE,
   IS_LOGIN_LOCAL_STORAGE,
-  THEME,
-  LIGHT_THEME,
-  DARK_THEME, LOGIN, ADMIN
+  LOGIN,
+  ADMIN,
 } from "../../shared/constants";
-import { logout } from "../../store/slices";
+import { logout, changeTheme } from "../../store/slices";
 import { ACCESS_ADMIN } from "../../shared/constants";
 
 const { Title } = Typography;
@@ -24,11 +23,9 @@ const PageHeader = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
 
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+
   const user = useSelector((state) => state.login);
-
-  // const theme = localStorage.getItem(THEME) || LIGHT_THEME;
-
-  // const isLightTheme = theme === LIGHT_THEME;
 
   const changeLanguage = (language) => {
     i18n.changeLanguage(language);
@@ -61,17 +58,17 @@ const PageHeader = () => {
         ),
         key: "home",
       },
-      // {
-      //   label: (
-      //     <Switch
-      //       checkedChildren={<span> &#9788; </span>}
-      //       unCheckedChildren={<span> &#9789; </span>}
-      //       defaultChecked={isLightTheme}
-      //       onChange={(value) => changeTheme(value)}
-      //     />
-      //   ),
-      //   key: "theme",
-      // },
+      {
+        label: (
+          <Switch
+            checkedChildren={<span> &#9788; </span>}
+            unCheckedChildren={<span> &#9789; </span>}
+            defaultChecked={!isDarkMode}
+            onChange={() => dispatch(changeTheme())}
+          />
+        ),
+        key: "theme",
+      },
       {
         label: (
           <Select

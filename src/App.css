@@ -1,5 +1,8 @@
+@import 'antd/dist/reset.css';
+
 body {
   overflow-x: hidden;
+  margin: 0;
 }
 
 .app {
@@ -32,3 +35,8 @@ span.anticon-down {
   .ant-select-selector {
   color: #a6adb4;
 }
+
+:where(.css-dev-only-do-not-override-1n7nwfa).ant-form-vertical .ant-form-item-label>label {
+  height: auto !important;
+}
+

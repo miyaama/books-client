@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Avatar, Card } from "antd";
+import {  Card } from "antd";
 import { Comment } from '@ant-design/compatible';
 import moment from "moment";
 import axios from "axios";
+import Avvvatars from 'avvvatars-react';
 
 import PageLayout from "../../components/PageLayout";
 import Editor from "./Editor";
 import CommentList from "./CommentList";
-import { BACKEND_URL, AVATAR_URL } from "../../shared/constants";
+import { BACKEND_URL } from "../../shared/constants";
 
 import BackButton from "./BackButton";
 import BookHeader from "./BookHeader/BookHeader";
@@ -19,6 +20,7 @@ const BookPage = () => {
   const location = useLocation();
 
   const { record } = location.state;
+  console.log("record", record)
 
   const [comments, setComments] = useState([]);
   const [submitting, setSubmitting] = useState(false);
@@ -37,7 +39,7 @@ const BookPage = () => {
     response.data.forEach((comment) => {
       comments.push({
         author: comment.username,
-        avatar: `${AVATAR_URL}/${comment.userId}`,
+        avatar:  <Avvvatars style="shape" value={comment.useri} /> ,
         content: <p>{comment.comment}</p>,
         datetime: moment(comment.createdAt).fromNow(),
       });
@@ -68,7 +70,7 @@ const BookPage = () => {
             ...comments,
             {
               author: user.username,
-              avatar: `${AVATAR_URL}/${user.id}`,
+              avatar:  <Avvvatars style="shape" value={user.id} /> ,
               content: <p>{value}</p>,
               datetime: moment(new Date()).fromNow(),
             },
@@ -91,7 +93,7 @@ const BookPage = () => {
         )}
         {isLogin && (
           <Comment
-            avatar={<Avatar src={`${AVATAR_URL}/${user.id}`} alt="avatar" />}
+            avatar={ <Avvvatars style="shape" value={user.id} /> }
             content={
               <Editor
                 onChange={handleChange}

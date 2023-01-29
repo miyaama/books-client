@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button, Form, Input, Typography } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { login } from "../../store/slices";
 import styles from "./LoginPage.module.scss";
@@ -25,6 +25,9 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+
 
   const onLogin = () => {
     axios
@@ -70,7 +73,7 @@ const LoginPage = () => {
 
   return (
     <PageLayout noScroll>
-      <div className={styles.container}>
+      <div  className={isDarkMode ? styles.dark : styles.white}>
         <Form
           name="normal_login"
           size="large"

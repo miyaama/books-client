@@ -37,10 +37,16 @@ const Like = ({ record, bookId }) => {
     <Col span={4}>
       <Row justify="end" gutter={[8, 8]}>
         <Col>
-          <HeartIcon
-            onClick={onLikeBook}
-            className={clsx(styles.like, isItemLikedByUser && styles.onLike)}
-          />
+          {isLogin ? (
+            <HeartIcon
+              onClick={onLikeBook}
+              className={clsx(styles.like, isItemLikedByUser && styles.onLike)}
+            />
+          ) : (
+            <HeartIcon
+              className={clsx(styles.like, isItemLikedByUser && styles.onLike)}
+            />
+          )}
         </Col>
         <Col>
           <p className={styles.text}>{likes?.length}</p>

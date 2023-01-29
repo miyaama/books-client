@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import "./i18n";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import { ThemeSelector } from "./components/PageHeader/Theme";
 
 import "./index.css";
 import App from "./App";
@@ -14,9 +13,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ThemeSelector>
-          <App />
-        </ThemeSelector>
+        <App />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

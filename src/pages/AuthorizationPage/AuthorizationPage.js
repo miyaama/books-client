@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Button, Form, Input, Typography } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
@@ -15,12 +15,18 @@ const { Title } = Typography;
 
 const AuthorizationPage = () => {
   const navigate = useNavigate();
+
   const dispatch = useDispatch();
+
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+
   const [form] = Form.useForm();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [error, setError] = useState("");
+
   const { t } = useTranslation();
 
   const register = () => {
@@ -65,7 +71,10 @@ const AuthorizationPage = () => {
 
   return (
     <PageLayout noScroll>
-      <div className={styles.container}>
+      <div
+    
+        className={isDarkMode ? styles.dark : styles.white}
+      >
         <Form
           form={form}
           layout="vertical"
