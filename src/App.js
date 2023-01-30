@@ -7,7 +7,8 @@ import AppRoutes from "./components/AppRoutes/AppRoutes";
 import {
   IS_LOGIN_LOCAL_STORAGE,
   THEME,
-} from "./shared/constants/localStorageKeys";
+  DARK_THEME,
+} from "./shared/constants/";
 import {
   login,
   fetchTags,
@@ -21,16 +22,15 @@ const getAuthFromLocalStorage = () =>
 
 function App() {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+
   const { defaultAlgorithm, darkAlgorithm } = theme;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const isAuth = getAuthFromLocalStorage();
-    let isTheme = localStorage.getItem(THEME) ?? false;
-    console.log("localStorage.getItem(THEME)", localStorage.getItem(THEME))
-
-    dispatch(setTheme(isTheme));
+    let localStorageTheme = localStorage.getItem(THEME) ?? DARK_THEME;
+    dispatch(setTheme(localStorageTheme));
     dispatch(fetchTags());
     dispatch(fetchCollections());
     dispatch(fetchItems());
@@ -51,7 +51,7 @@ function App() {
   return (
     <ConfigProvider
       theme={{
-        algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
+        algorithm: isDarkMode === DARK_THEME ? darkAlgorithm : defaultAlgorithm,
       }}
     >
       <div className="app">

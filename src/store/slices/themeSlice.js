@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { THEME } from "../../shared/constants";
+import { DARK_THEME, LIGHT_THEME, THEME } from "../../shared/constants";
 
 const initialState = {
   isDarkMode: false,
@@ -10,11 +10,12 @@ export const themeSlice = createSlice({
   initialState,
   reducers: {
     changeTheme: (state) => {
-      localStorage.setItem(THEME, !state.isDarkMode);
-      return { isDarkMode: !state.isDarkMode };
+      let changedTheme;
+      changedTheme = state.isDarkMode === DARK_THEME ? LIGHT_THEME : DARK_THEME;
+      localStorage.setItem(THEME, changedTheme);
+      return { isDarkMode: changedTheme };
     },
     setTheme: (_, action) => {
-      console.log("action.payload", action.payload);
       localStorage.setItem(THEME, action.payload);
       return { isDarkMode: action.payload };
     },

@@ -36,7 +36,7 @@ const BookPage = () => {
   const loadComments = async () => {
     const response = await axios.get(`${BACKEND_URL}/comments/${bookId}`);
     const comments = [];
-    response.data.forEach((comment) => {
+    response.data?.forEach((comment) => {
       comments.push({
         author: comment.username,
         avatar: <Avvvatars style="shape" value={comment.useri} />,
@@ -49,7 +49,7 @@ const BookPage = () => {
 
   const loadBookInfo = async () => {
     const response = await axios.get(`${BACKEND_URL}/items/byBookId/${bookId}`);
-    setBook({ ...response.data[0], itemTypes: record.itemTypes });
+    setBook({ ...response?.data[0], itemTypes: record.itemTypes });
   };
 
   useEffect(() => {

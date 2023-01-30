@@ -10,6 +10,7 @@ import {
   IS_LOGIN_LOCAL_STORAGE,
   LOGIN,
   ADMIN,
+  DARK_THEME,
 } from "../../shared/constants";
 import { logout, changeTheme } from "../../store/slices";
 import { ACCESS_ADMIN } from "../../shared/constants";
@@ -58,7 +59,7 @@ const PageHeader = () => {
           <Switch
             checkedChildren={<span> &#9788; </span>}
             unCheckedChildren={<span> &#9789; </span>}
-            defaultChecked={isDarkMode}
+            defaultChecked={isDarkMode === DARK_THEME ? false : true}
             onChange={() => dispatch(changeTheme())}
           />
         ),
