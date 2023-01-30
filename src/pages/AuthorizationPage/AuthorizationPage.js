@@ -5,7 +5,7 @@ import { Button, Form, Input, Typography } from "antd";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
-import { HOME, IS_LOGIN_LOCAL_STORAGE, LOGIN } from "../../shared/constants";
+import { DARK_THEME, HOME, IS_LOGIN_LOCAL_STORAGE, LOGIN } from "../../shared/constants";
 import styles from "./AuthorizationPage.module.scss";
 import PageLayout from "../../components/PageLayout";
 import { login } from "../../store/slices";
@@ -73,7 +73,7 @@ const AuthorizationPage = () => {
     <PageLayout noScroll>
       <div
     
-        className={isDarkMode ? styles.dark : styles.white}
+        className={isDarkMode === DARK_THEME ? styles.dark : styles.white}
       >
         <Form
           form={form}

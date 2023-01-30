@@ -13,6 +13,7 @@ import {
   IS_LOGIN_LOCAL_STORAGE,
   AUTHORIZATION,
   HOME,
+  DARK_THEME,
 } from "../../shared/constants";
 import { BACKEND_URL } from "../../shared/constants";
 
@@ -73,7 +74,7 @@ const LoginPage = () => {
 
   return (
     <PageLayout noScroll>
-      <div  className={isDarkMode ? styles.dark : styles.white}>
+      <div  className={isDarkMode === DARK_THEME ? styles.dark : styles.white}>
         <Form
           name="normal_login"
           size="large"
